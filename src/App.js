@@ -7,8 +7,14 @@ import { motion } from 'framer-motion';
    ======================= */
 
 // easing
-const easeInOutCubic = (t) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOutCubic = t => 1 - Math.pow(1 - t, 3)
+
+
+// motion prefs
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // which keys count as scroll
 const SCROLL_KEYS = new Set([
@@ -41,25 +47,34 @@ const unlockUserScroll = () => {
 };
 
 // animate to exact Y, returns a Promise when done
-const animateScrollTo = (targetTop, duration = 900, easing = easeInOutCubic) =>
-  new Promise((resolve) => {
-    const start = window.pageYOffset;
-    const dist = targetTop - start;
-    if (duration <= 0 || Math.abs(dist) < 1) {
-      window.scrollTo(0, targetTop);
-      resolve();
-      return;
+const animateScrollTo = (targetTop, duration = 650, easing = easeOutCubic) =>
+  new Promise(resolve => {
+    if (prefersReducedMotion) {
+      window.scrollTo(0, targetTop)
+      resolve()
+      return
     }
-    const startTime = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - startTime) / duration);
-      const eased = easing(t);
-      window.scrollTo(0, start + dist * eased);
-      if (t < 1) requestAnimationFrame(step);
-      else resolve();
-    };
-    requestAnimationFrame(step);
-  });
+
+    const start = window.pageYOffset
+    const dist = targetTop - start
+
+    if (duration <= 0 || Math.abs(dist) < 1) {
+      window.scrollTo(0, targetTop)
+      resolve()
+      return
+    }
+
+    const startTime = performance.now()
+    const step = now => {
+      const t = Math.min(1, (now - startTime) / duration)
+      const eased = easing(t)
+      window.scrollTo(0, start + dist * eased)
+      if (t < 1) requestAnimationFrame(step)
+      else resolve()
+    }
+    requestAnimationFrame(step)
+  })
+
 
 // precise scroll to an element (accounts for fixed header)
 const scrollToId = (id, { duration = 900 } = {}) => {
@@ -119,11 +134,13 @@ useEffect(() => {
      Scroll snap: Hero <-> Intro
      ======================= */
   useEffect(() => {
-    const downDuration = 900; // cinematic down
-    const upDuration = 500; // snappier up
-    const wheelTrigger = 8; // wheel delta threshold
-    const swipeTrigger = 12; // touch swipe px
-    const heroSlideStart = 0.2; // when hero starts sliding
+const downDuration = prefersReducedMotion ? 0 : 750
+const upDuration   = prefersReducedMotion ? 0 : 480
+const wheelTrigger = 6
+const swipeTrigger = 12
+const heroSlideStart = 0.15
+
+
 
     const getHeaderHeight = () =>
       document.querySelector('header')?.getBoundingClientRect().height ?? 0;
@@ -194,7 +211,7 @@ useEffect(() => {
       if (!b) return;
 
       const beforeIntroTop = y < b.top - 0.1 * vh; // clearly above intro
-      const nearIntroTopUp = y >= b.top && y <= b.top + b.height * 0.35; // top slice of intro
+      const nearIntroTopUp = y >= b.top && y <= b.top + b.height * 0.2; // top slice of intro
 
       // DOWN: from hero → to intro
       if (e.deltaY > wheelTrigger && beforeIntroTop) {

@@ -4,6 +4,15 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
 
+/* ROOT FONT SIZE — Responsive Scaling */
+html { font-size: 16px; }
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+}
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   background: #f7f7f7;
@@ -27,17 +36,20 @@ header.scrolled {
 }
 
 .logo-wrapper {
-  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1.25rem; /* was 20px */
   transition: all 0.4s ease;
+  max-width: 1200px; margin: 0 auto; padding: 0 1rem;
 }
 .logo { height: 100px; object-fit: contain; }
 
-nav { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+nav { display: flex; gap: 2.5rem; justify-content: center; flex-wrap: wrap; } /* was 40px */
 nav a {
   color: white; font-weight: 300; text-decoration: none; text-transform: uppercase;
-  font-size: 18px; letter-spacing: 1px; transition: color 0.3s ease;
+  font-size: 1.125rem; /* was 18px */
+  letter-spacing: 1px; transition: color 0.3s ease;
 }
-nav a.home-link { font-size: 22px; font-weight: 400; border-bottom: 2px solid white; padding-bottom: 2px; }
+nav a.home-link { font-size: 1.375rem; /* was 22px */ font-weight: 400; border-bottom: 2px solid white; padding-bottom: 2px; }
 nav a:hover { color: #ddd; }
 
 /* =========================================================
@@ -86,10 +98,17 @@ nav a:hover { color: #ddd; }
   100% { top: 100%; opacity: 0; }
 }
 .arrow-head-animate {
-  width: 50px; height: 50px; border-left: 3px solid white; border-bottom: 3px solid white;
-  transform: rotate(-45deg); margin-top: 8px; opacity: 0; animation: arrowHeadFade 4s ease-in-out infinite;
+  width: 2.5rem; height: 2.5rem; border-left: 3px solid white; border-bottom: 3px solid white;
+  transform: rotate(-45deg); margin-top: 0.5rem; opacity: 0; animation: arrowHeadFade 4s ease-in-out infinite;
 }
 @keyframes arrowHeadFade { 0%,40%{opacity:0;} 50%{opacity:.6;} 60%,70%{opacity:1;} 80%{opacity:.6;} 100%{opacity:0;} }
+
+@media (max-width: 768px) {
+  .arrow-head-animate {
+    width: 2rem; height: 2rem;
+    border-left-width: 2px; border-bottom-width: 2px;
+  }
+}
 
 /* snap-up faster transition (temporary during JS-driven snap up) */
 :root[data-snap="up"] .hero {
@@ -548,8 +567,8 @@ footer {
 ========================================================= */
 @media (max-width: 900px) {
   /* header tweaks */
-  .logo { height: 80px; }
-  header.scrolled nav a { font-size: 10px; }
+  .logo { height: 5rem; } /* was 80px */
+  header.scrolled nav a { font-size: 0.75rem; } /* was 10px */
 
   /* hero */
   .typed-text {
