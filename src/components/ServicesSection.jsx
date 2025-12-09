@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // --- FIXED IMAGE IMPORTS ---
 // This guarantees the images load correctly regardless of folder structure
-import weddingImg from '../assets/images/wedding.jpg';
+import weddingImg from '../assets/images/wedding2.webp';
 import realEstateImg from '../assets/images/realestate-cover.jpg';
 import portraitImg from '../assets/images/portrait.jpg';
 import eventsImg from '../assets/images/events.jpg';

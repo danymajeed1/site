@@ -1,27 +1,28 @@
 // src/components/ContactFooter.js
 import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useScroll } from 'framer-motion';
 
 const ContactFooter = () => {
   const containerRef = useRef(null);
-  const [selectedService, setSelectedService] = useState(""); // Track selection
+  const [selectedService, setSelectedService] = useState(""); 
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [-100, 0]);
-
+  // --- SCROLL TO TOP LOGIC ---
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth glide back up
+    });
   };
 
   return (
-    <footer className="grand-finale" ref={containerRef} id="contact">
+    <section className="grand-finale" ref={containerRef} id="contact">
       
-      {/* 1. THE CONTACT FORM */}
+      {/* 1. THE CONTACT FORM ZONE */}
       <div className="contact-zone">
         <div className="contact-header">
           <span className="section-tag">Custom Projects</span>
@@ -62,7 +63,6 @@ const ContactFooter = () => {
             <div className="select-arrow">↓</div>
           </div>
 
-          {/* CONDITIONAL: "Other" Specification */}
           {selectedService === 'other' && (
             <div className="form-group slide-in">
               <input type="text" placeholder=" " id="other-specify" />
@@ -73,7 +73,6 @@ const ContactFooter = () => {
           {/* ROW 3: Date & Location */}
           <div className="form-row">
             <div className="form-group">
-              {/* Using text type with onFocus to show date picker keeps the label clean */}
               <input 
                 type="text" 
                 placeholder=" " 
@@ -97,7 +96,6 @@ const ContactFooter = () => {
             </div>
             <div className="form-group">
                <input type="text" placeholder=" " id="budget" />
-               {/* Label will float high above the line */}
                <label htmlFor="budget">Estimated Budget (Optional)</label>
             </div>
           </div>
@@ -108,38 +106,40 @@ const ContactFooter = () => {
         </form>
       </div>
 
-      {/* 2. THE FOOTER */}
-      <div className="footer-zone">
-        <motion.div className="footer-bg-text" style={{ y }}>
-          DANY MAJEED
-        </motion.div>
+      {/* 2. THE FOOTER ZONE */}
+      <footer className="footer-zone">
+        <div className="footer-bg-text">DANY</div>
 
         <div className="footer-content">
-          <div className="footer-cols">
-            <div className="col">
-              <h4>Sitemap</h4>
-              <Link to="/">Home</Link>
-              <Link to="/portfolio">Showcase</Link>
-              <Link to="/services">Services</Link>
-              <Link to="/contact">Contact</Link>
-            </div>
-            <div className="col">
-              <h4>Socials</h4>
-              <a href="#!" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="#!" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="#!" target="_blank" rel="noreferrer">Behance</a>
-            </div>
-            <div className="col">
-              <h4>Legal</h4>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
-              <span className="copyright">© 2025 Dany Majeed.</span>
-            </div>
+          
+          <div className="footer-left">
+            <p>© {new Date().getFullYear()} DANY MAJEED.</p>
           </div>
-          <button onClick={scrollToTop} className="back-to-top">↑ Top</button>
+
+          {/* CENTER: BACK TO TOP BUTTON */}
+          <button onClick={scrollToTop} className="back-to-top" aria-label="Scroll to top">
+            ↑
+          </button>
+
+          <div className="footer-right">
+            <a href="#home">Home</a>
+            <a href="#showcase">Showcase</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+            
+            <a 
+              href="https://instagram.com/danymajeed" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="ig-link"
+            >
+              Instagram ↗
+            </a>
+          </div>
+
         </div>
-      </div>
-    </footer>
+      </footer>
+    </section>
   );
 };
 

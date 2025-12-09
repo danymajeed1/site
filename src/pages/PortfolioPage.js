@@ -3,24 +3,34 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlowBackground from '../components/FlowBackground';
 
-// --- SIMPLIFIED DATA ---
-// No titles, no locations. Just ID, Category, and Source.
-// Make sure you have these images in your public folder.
+// --- UPDATED DATA SOURCE (Incorporating 8 New Wedding Images) ---
+// Note: Paths start with '/' assuming images are in the PUBLIC folder.
 const portfolioData = [
-  // Real Estate (Wider shots usually look good here)
+  // --- REAL ESTATE ---
   { id: 1, category: 'realestate', src: '/photo1.jpg' },
   { id: 4, category: 'realestate', src: '/photo4.jpg' },
-  // Weddings (Mix of portrait and landscape)
-  { id: 2, category: 'wedding',    src: '/photo2.jpg' },
-  { id: 5, category: 'wedding',    src: '/photo5.jpg' },
-  // Portraits (Taller shots)
-  { id: 3, category: 'portrait',   src: '/photo3.jpg' },
-  { id: 7, category: 'portrait',   src: '/hero.jpg' },
-  // Events
-  { id: 6, category: 'events',     src: '/photo6.jpg' },
-  // NEW CATEGORY: ART (Nature, cars, abstract)
-  { id: 8, category: 'art',        src: '/re-after.jpg' }, // Example image
-  { id: 9, category: 'art',        src: '/wed-after.jpg' }, // Example image
+  
+  // --- WEDDINGS (8 NEW ENTRIES + 1 Original) ---
+  { id: 2, category: 'wedding',    src: '/photo2.jpg' }, // Original
+  { id: 10, category: 'wedding',    src: '/wedding1.webp' }, // New
+  { id: 11, category: 'wedding',    src: '/wedding2.webp' },
+  { id: 12, category: 'wedding',    src: '/wedding3.webp' },
+  { id: 13, category: 'wedding',    src: '/wedding4.webp' },
+  { id: 14, category: 'wedding',    src: '/wedding5.webp' },
+  { id: 15, category: 'wedding',    src: '/wedding6.webp' },
+  { id: 16, category: 'wedding',    src: '/wedding7.webp' },
+  { id: 17, category: 'wedding',    src: '/wedding8.webp' }, // New
+  
+  // --- PORTRAITS ---
+  { id: 3, category: 'portrait',   src: '/photo3.jpg' },
+  { id: 7, category: 'portrait',   src: '/hero.jpg' },
+  
+  // --- EVENTS ---
+  { id: 6, category: 'events',     src: '/photo6.jpg' },
+  
+  // --- ART ---
+  { id: 8, category: 'art',        src: '/re-after.jpg' }, 
+  { id: 9, category: 'art',        src: '/wed-after.jpg' }, 
 ];
 
 const categories = [
@@ -29,7 +39,7 @@ const categories = [
   { id: 'realestate', label: 'Real Estate' },
   { id: 'portrait', label: 'Portraits' },
   { id: 'events', label: 'Events' },
-  { id: 'art', label: 'Art / Personal' } // <-- New Tab
+  { id: 'art', label: 'Art / Personal' }
 ];
 
 // Animation variants for the grid items
@@ -104,6 +114,7 @@ const PortfolioPage = () => {
               className="masonry-item"
               onClick={() => setSelectedImage(item.src)}
             >
+              {/* Note: loading="lazy" is crucial for performance */}
               <img src={item.src} alt={item.category} loading="lazy" />
               
               {/* SIMPLIFIED HOVER: Just the category badge */}

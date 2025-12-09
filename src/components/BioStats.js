@@ -76,7 +76,7 @@ const BioStats = () => {
                 perspective: 1000       // Needs perspective to look 3D
               }}
             >
-              <img src="/me.jpg" alt="Dany Majeed" className="bio-img" />
+              <img src="/me.webp" alt="Dany Majeed" className="bio-img" />
               <div className="bio-overlay">
                 <div className="bio-badge">Creative Director</div>
                 <h3>Dany Majeed</h3>
@@ -95,7 +95,7 @@ const BioStats = () => {
               className="bio-tilt-wrapper"
             >
               <div className="bio-card photo-card">
-                <img src="/me.jpg" alt="Dany Majeed" className="bio-img" />
+                <img src="/me.webp" alt="Dany Majeed" className="bio-img" />
                 <div className="bio-overlay">
                   <div className="bio-badge">Creative Director</div>
                   <h3>Dany Majeed</h3>
