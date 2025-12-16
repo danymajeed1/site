@@ -23,11 +23,11 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
-const slideRight = {
+/* const slideRight = {
   hidden: { opacity: 0, x: 100 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
 };
-
+*/
 const floatUp = {
   hidden: { opacity: 0, y: 100 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
@@ -73,9 +73,9 @@ function App() {
               <BioStats />
             </Section>
 
-            <Section variant={slideRight}>
+            
               <ImageReveal />
-            </Section>
+            
 
             <Section variant={floatUp}>
               <ServicesSection />

@@ -1,8 +1,17 @@
 /* =========================================================
-   1. RESET & BASE (DEEP DARK THEME)
+   1. RESET & BASE (STRICT VERTICAL ONLY)
 ========================================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+
+html, body { 
+  margin: 0; 
+  padding: 0; 
+  scroll-behavior: smooth;
+  /* CRITICAL FIX: Kill horizontal scroll */
+  overflow-x: hidden; 
+  width: 100%;
+  max-width: 100%;
+}
 
 /* Responsive Font Scaling */
 html { font-size: 16px; }
@@ -10,12 +19,16 @@ html { font-size: 16px; }
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background: #050509; /* Deep Cinematic Dark */
+  background: #050509; 
   color: #f5f5f5;
-  overflow-x: hidden; /* Prevents horizontal scrollbar */
+  position: relative; /* Helps contain absolute elements */
 }
 
-.App { width: 100%; position: relative; }
+.App { 
+  width: 100%; 
+  position: relative; 
+  overflow: hidden; /* Double protection */
+}
 
 /* =========================================================
    2. PIANO BLACK FLOW BACKGROUND
@@ -222,92 +235,150 @@ nav .nav-link.active-page::after {
 .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.5; }
 
 /* =========================================================
-   6. REVEAL SECTION (FINAL POLISH & PERFORMANCE FIX)
+   6. REVEAL SECTION (FIXED VISIBILITY)
 ========================================================= */
-.reveal-section { padding: 120px 20px; background: #0a0a0a; position: relative; }
-.reveal-content-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: center; }
-
-/* HEADER FIXES (Centering & Font) */
-.reveal-header { text-align: center; margin-bottom: 50px; width: 100%; }
-.reveal-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; margin-bottom: 15px; color: #fff; }
-
-/* CRITICAL FIX: "Drag slider to compare" text alignment & Font */
-.reveal-header p { 
-  display: block; 
-  max-width: 800px; 
-  margin: 0 auto; /* CRITICAL: Centers the block element */
-  text-align: center; /* Ensures text inside is centered */
-  
-  font-family: 'Montserrat', sans-serif !important; /* Enforcing correct font */
-  font-size: 0.85rem;
-  letter-spacing: 0.25em; /* Sharper Tracking */
-  text-transform: uppercase;
-  color: #888;
-  margin-top: 10px;
+.reveal-section { 
+  padding: 150px 0; 
+  background: #0a0a0a; 
+  position: relative; 
+  overflow: hidden; 
 }
 
-/* TABS/BUTTONS (Angular Fix) */
-.reveal-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-.tab-btn {
-  background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #888;
-  padding: 10px 25px; 
-  border-radius: 4px; /* FIX: Sharp Corners */
-  
-  cursor: pointer; text-transform: uppercase; 
-  font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
-  letter-spacing: 0.15em; font-weight: 600;
-  transition: all 0.3s ease;
+.reveal-stage {
+  max-width: 1600px; /* Wider stage to fit panel + image */
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 750px; 
 }
-.tab-btn.active { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
 
-/* SLIDER CONTAINER POLISH */
+/* --- THE IMAGE SLIDER --- */
 .reveal-container {
-  position: relative; width: 100%; height: 60vh; border-radius: 8px; overflow: hidden;
-  cursor: col-resize; box-shadow: 0 20px 60px rgba(0,0,0,0.6); 
-  border: 1px solid rgba(255,255,255,0.15); 
+  position: relative; 
+  border-radius: 4px; 
+  overflow: hidden;
+  cursor: col-resize; 
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8); 
+  border: 1px solid rgba(255,255,255,0.1); 
+  z-index: 10; 
+  background: #000;
+  transition: width 0.5s ease, height 0.5s ease; 
 }
 
-.reveal-img-bg, .reveal-img-fg img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-.reveal-img-fg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0a; }
+/* Landscape Size */
+.reveal-container.landscape { width: 900px; height: 550px; }
+/* Portrait Size */
+.reveal-container.portrait  { width: 500px; height: 700px; }
 
-/* LABELS */
-.label-badge {
-  position: absolute; top: 20px; padding: 6px 14px; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-  font-size: 11px; font-weight: bold; border-radius: 4px; pointer-events: none; letter-spacing: 0.1em;
-}
-.label-badge.before { left: 20px; color: #ffadad; border: 1px solid rgba(255,50,50,0.5); }
-.label-badge.after { right: 20px; color: #adffad; border: 1px solid rgba(50,255,100,0.5); }
+/* Images */
+.reveal-layer-bottom, .reveal-layer-top { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.reveal-layer-bottom img, .reveal-layer-top img { width: 100%; height: 100%; object-fit: cover; }
+.reveal-layer-bottom { z-index: 1; }
+.reveal-layer-top    { z-index: 2; }
 
 
-/* --- HANDLE DESIGN ENHANCEMENT (Angular & Speed Fix) --- */
-.reveal-handle {
-  position: absolute; top: 0; bottom: 0; 
-  width: 4px; 
-  background: #fff; 
-  transform: translateX(-50%);
-  pointer-events: none; z-index: 10; 
+/* --- THE SLIDING PANEL (FIXED COORDINATES) --- */
+.reveal-panel {
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  width: 400px;
+  background: #050505; 
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: none; 
+  z-index: 5; /* Behind Image */
   
-  /* CRITICAL: Remove slow transition property for INSTANT mouse tracking */
+  display: flex; align-items: center; padding: 40px; padding-right: 60px; 
+  box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+  
+  /* POSITIONING LOGIC: 
+     1. Start at center of screen (left: 50%)
+     2. Move left by half the image width (margin-left)
+     This places the panel exactly BEHIND the image to start.
+  */
+  left: 50%;
+  transition: margin-left 0.5s ease; /* Smoothly move when switching landscape/portrait */
+}
+
+/* If Image is Landscape (900px wide), start panel at -450px from center */
+.reveal-panel.landscape { margin-left: -450px; }
+
+/* If Image is Portrait (500px wide), start panel at -250px from center */
+.reveal-panel.portrait { margin-left: -250px; }
+
+
+/* --- CONTENT INSIDE PANEL --- */
+.reveal-tabs { 
+  display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; align-items: flex-start;
+}
+.tab-btn {
+  background: transparent; border: none; color: #666;
+  text-transform: uppercase; font-family: 'Montserrat', sans-serif; 
+  font-size: 0.85rem; letter-spacing: 0.15em; font-weight: 600;
+  padding: 0; cursor: pointer; transition: all 0.3s ease; position: relative;
+}
+.tab-btn.active { color: #fff; padding-left: 15px; }
+.tab-btn.active::before {
+  content: ''; position: absolute; left: 0; top: 50%; 
+  width: 6px; height: 6px; background: #fff; transform: translateY(-50%);
+}
+
+.panel-content h3 {
+  font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: #fff;
+  margin-bottom: 10px; line-height: 1.1;
+}
+.panel-content p {
+  font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #aaa; line-height: 1.6;
+}
+
+/* --- HANDLE & LABELS (YOUR CODE) --- */
+.label-badge {
+  position: absolute; top: 20px; 
+  padding: 6px 14px; font-size: 11px; font-weight: bold; border-radius: 4px; 
+  letter-spacing: 0.1em; pointer-events: none;
+}
+.label-badge.before { left: 20px; color: #ffadad; border: 1px solid rgba(255,50,50,0.5); background: rgba(0,0,0,0.6); }
+.label-badge.after { right: 20px; color: #adffad; border: 1px solid rgba(50,255,100,0.5); background: rgba(0,0,0,0.6); }
+
+.reveal-handle {
+  position: absolute; top: 0; bottom: 0; width: 4px; background: #fff; 
+  transform: translateX(-50%); pointer-events: none; z-index: 10; 
   transition: box-shadow 0.2s ease, width 0.2s ease; 
   box-shadow: 0 0 15px #fff, 0 0 30px rgba(255,255,255,0.6);
 }
-
 .handle-circle {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 35px; height: 35px; 
-  background: #fff; 
-  /* FIX: Sharp Corners (Angular Design) */
-  border-radius: 4px; 
-  border: 3px solid #000; 
-  color: #000; 
-  display: flex; align-items: center; justify-content: center; 
-  font-size: 18px;
-  /* FIX: Remove transitions for instant mouse follow */
+  width: 35px; height: 35px; background: #fff; 
+  border-radius: 4px; border: 3px solid #000; color: #000; 
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
   transition: none; 
 }
+.reveal-hint {
+  display: block; width: 100%; text-align: center; font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3em; 
+  color: rgba(255, 255, 255, 0.3); margin-top: 30px; pointer-events: none;
+}
 
-/* MOBILE */
-@media (max-width: 768px) { .reveal-container { height: 45vh; } }
+/* --- MOBILE FALLBACK --- */
+@media (max-width: 1000px) {
+  .reveal-section { padding: 80px 20px; }
+  .reveal-stage { flex-direction: column; height: auto; min-height: auto; gap: 40px; }
+  
+  .reveal-container.landscape, .reveal-container.portrait { width: 100%; height: 500px; }
+  
+  .reveal-panel {
+    position: relative; left: auto; top: auto; bottom: auto; margin-left: 0 !important;
+    width: 100%; transform: none !important; opacity: 1 !important;
+    background: transparent; border: none; box-shadow: none; padding: 0;
+  }
+  .reveal-tabs { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .tab-btn { padding: 10px 15px; background: rgba(255,255,255,0.1); border-radius: 4px; }
+  .tab-btn.active { background: #fff; color: #000; padding-left: 15px; }
+  .tab-btn.active::before { display: none; }
+  .panel-content { text-align: center; }
+}
 
 
 /* =========================================================
@@ -711,45 +782,27 @@ select option {
 ======================== */
 .velocity-cta-section {
   position: relative;
-  /* 1. We keep the section height reasonable for spacing */
   height: 80vh; 
   display: flex; 
   justify-content: center; 
   align-items: center;
-  background: transparent; /* Transparent so we see layers */
-  
-  /* 2. CRITICAL: Allow elements to hang out of the box */
+  background: transparent;
+  /* Allow desktop bleed */
   overflow: visible; 
-  
-  /* 3. Spacing to ensure overlap happens nicely */
   margin-top: 150px; 
   margin-bottom: 150px;
 }
 
-/* THE ANGLED TEXT WRAPPER */
 .velocity-angled-wrapper {
   position: absolute;
-  /* 4. Center it */
   top: 50%; left: 50%;
-  
-  /* 5. Make it HUGE so it reaches into other sections */
-  width: 120vw;  /* Wider than screen to prevent corners showing */
-  height: 150%;  /* Taller than section to bleed up/down */
-  
-  /* 6. The Angle */
+  width: 120vw; height: 150%;
   transform: translate(-50%, -50%) rotate(-6deg);
-  
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center;
+  display: flex; flex-direction: column; justify-content: center;
   gap: 20px; 
-  
-  /* 7. Layering: Behind the box, but visibly overlaying backgrounds */
-  z-index: 0; 
-  pointer-events: none;
+  z-index: 0; pointer-events: none;
 }
 
-/* THE SCROLLING TEXT STYLE */
 .parallax-text {
   overflow: hidden;
   margin: 0;
@@ -762,39 +815,23 @@ select option {
   font-family: 'Oswald', sans-serif; 
   font-weight: 900; 
   text-transform: uppercase; 
-  
-  /* BIG TEXT */
   font-size: 7rem; 
   line-height: 0.85;
-  
-  display: flex; 
-  white-space: nowrap; 
-  flex-wrap: nowrap;
-  
-  /* 8. THE OVERLAY STYLE (Hollow Text) */
-  /* This looks "Pure" on black, but cool when crossing images */
+  display: flex; white-space: nowrap; flex-wrap: nowrap;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15); /* Faint outline */
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15); 
 }
 
-.scroller span {
-  display: block;
-  margin-right: 40px;
-}
+.scroller span { display: block; margin-right: 40px; }
 
-/* THE INTERACTION BOX (Solid & Sharp) */
 .cta-interaction-box {
   position: relative;
-  /* 9. Must be HIGHER than the text so text goes BEHIND it */
   z-index: 20; 
-  
-  background: #0a0a0a; /* Solid background to hide text behind it */
+  background: #0a0a0a; 
   border: 1px solid rgba(255,255,255,0.2);
   padding: 80px 120px;
   text-align: center;
   border-radius: 4px;
-  
-  /* Big shadow to separate it from the chaotic text */
   box-shadow: 0 0 100px rgba(0,0,0,0.8);
 }
 
@@ -830,62 +867,177 @@ select option {
   box-shadow: 0 0 30px rgba(255,255,255,0.4);
 }
 
-/* --- MOBILE ADJUSTMENTS --- */
+/* --- MOBILE VELOCITY FIXES --- */
 @media (max-width: 900px) {
   .velocity-cta-section {
     height: 70vh;
-    margin-top: 50px; /* Less bleed on mobile */
+    margin-top: 50px; 
     margin-bottom: 50px;
-    overflow: hidden; /* Clean cut on mobile to prevent horizontal scroll issues */
+    /* CRITICAL: Cut off overflow on mobile to prevent side-scroll */
+    overflow: hidden; 
+    width: 100%;
   }
 
   .velocity-angled-wrapper {
-    /* Less extreme angle on phone */
     transform: translate(-50%, -50%) rotate(-10deg);
-    width: 200vw; /* Massive width needed for rotation */
+    width: 200vw; 
     gap: 10px;
   }
   
   .scroller {
-    font-size: 4rem; /* Smaller text */
+    font-size: 4rem; 
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
   }
 
   .cta-interaction-box {
     padding: 40px 20px;
     width: 90%;
-    background: rgba(10,10,10,0.9); /* More opaque on mobile for readability */
+    background: rgba(10,10,10,0.9); 
   }
   
   .cta-content h2 { font-size: 2.5rem; }
 }
 
 /* =========================================================
-   10. PORTFOLIO (Lightroom Masonry)
+   10. PORTFOLIO & LIGHTBOX (WITH MOBILE MENU FIX)
 ========================================================= */
-.portfolio-page { background: #050505; min-height: 100vh; padding-top: 220px; padding-bottom: 100px; position: relative; }
-.portfolio-hero { text-align: center; margin-bottom: 60px; z-index: 10; position: relative; }
-.portfolio-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 5rem; color: #fff; }
+.portfolio-page { 
+  background: #050505; 
+  min-height: 100vh; 
+  padding-top: 220px; 
+  padding-bottom: 100px; 
+  position: relative; 
+}
 
-.filter-container { position: sticky; top: 130px; z-index: 20; display: flex; justify-content: center; margin-bottom: 80px; }
-.glass-filter-bar { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px; border-radius: 50px; display: flex; gap: 5px; }
-.filter-btn { background: transparent; border: none; color: #888; padding: 12px 24px; border-radius: 40px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; font-weight: 600; }
+.portfolio-hero { 
+  text-align: center; 
+  margin-bottom: 60px; 
+  z-index: 10; 
+  position: relative; 
+}
+
+.portfolio-hero h1 { 
+  font-family: 'Cormorant Garamond', serif; 
+  font-size: 5rem; 
+  color: #fff; 
+}
+
+/* --- FILTER MENU --- */
+.filter-container { 
+  position: sticky; 
+  top: 130px; 
+  z-index: 30; /* Ensure it stays on top */
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 80px; 
+  padding: 0 20px; /* Safe padding for mobile */
+}
+
+.glass-filter-bar { 
+  background: rgba(10, 10, 10, 0.85); 
+  backdrop-filter: blur(20px); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 8px 12px; 
+  border-radius: 50px; 
+  display: flex; 
+  gap: 8px;
+  
+  /* MOBILE FIX: Wrap items if screen is too small */
+  flex-wrap: wrap; 
+  justify-content: center;
+  max-width: 100%;
+}
+
+.filter-btn { 
+  background: transparent; 
+  border: none; 
+  color: #888; 
+  padding: 12px 24px; 
+  border-radius: 40px; 
+  cursor: pointer; 
+  text-transform: uppercase; 
+  font-size: 0.75rem; 
+  font-weight: 600; 
+  transition: 0.3s;
+  flex-shrink: 0; /* Prevent squishing */
+}
+
+.filter-btn:hover { color: #fff; }
 .filter-btn.active { background: #fff; color: #000; }
 
-.masonry-grid-container {
-  position: relative; z-index: 10; max-width: 1800px; margin: 0 auto; padding: 0 40px;
-  columns: 3 450px; column-gap: 15px;
+/* --- GRID --- */
+.masonry-grid-container { 
+  position: relative; 
+  z-index: 10; 
+  max-width: 1800px; 
+  margin: 0 auto; 
+  padding: 0 40px; 
+  columns: 3 450px; 
+  column-gap: 15px; 
 }
-.masonry-item { position: relative; border-radius: 4px; overflow: hidden; margin-bottom: 15px; cursor: pointer; background: #000; break-inside: avoid-column; transition: all 0.3s ease; border: 2px solid transparent; }
-.masonry-item img { width: 100%; height: auto; display: block; filter: brightness(0.9); transition: all 0.5s ease; }
-.masonry-item:hover { border-color: rgba(255,255,255,0.8); transform: translateY(-5px); }
-.masonry-item:hover img { filter: brightness(1.1); transform: scale(1.02); }
+
+.masonry-item { 
+  position: relative; 
+  border-radius: 4px; 
+  overflow: hidden; 
+  margin-bottom: 15px; 
+  cursor: pointer; 
+  background: #000; 
+  break-inside: avoid-column; 
+  transition: all 0.3s ease; 
+  border: 2px solid transparent; 
+}
+
+.masonry-item img { 
+  width: 100%; 
+  height: auto; 
+  display: block; 
+  filter: brightness(0.9); 
+  transition: all 0.5s ease; 
+}
+
+.masonry-item:hover { 
+  border-color: rgba(255,255,255,0.8); 
+  transform: translateY(-5px); 
+}
+.masonry-item:hover img { 
+  filter: brightness(1.1); 
+  transform: scale(1.02); 
+}
 
 /* LIGHTBOX */
-.lightbox { position: fixed; inset: 0; z-index: 3000; background: rgba(5,5,5,0.98); display: flex; align-items: center; justify-content: center; padding: 40px; }
-.lightbox img { max-width: 100%; max-height: 95vh; object-fit: contain; box-shadow: 0 0 100px rgba(0,0,0,0.9); }
-.close-lightbox { position: absolute; top: 30px; right: 40px; background: none; border: none; color: #fff; font-size: 3rem; cursor: pointer; }
+.lightbox { 
+  position: fixed; inset: 0; z-index: 3000; 
+  background: rgba(5,5,5,0.98); 
+  display: flex; align-items: center; justify-content: center; 
+  padding: 40px; 
+}
+.lightbox img { 
+  max-width: 100%; max-height: 95vh; 
+  object-fit: contain; 
+  box-shadow: 0 0 100px rgba(0,0,0,0.9); 
+}
+.close-lightbox { 
+  position: absolute; top: 30px; right: 40px; 
+  background: none; border: none; color: #fff; 
+  font-size: 3rem; cursor: pointer; 
+}
 
+/* --- MOBILE ADJUSTMENTS (PORTFOLIO) --- */
+@media (max-width: 900px) {
+  .masonry-grid-container { columns: 1; padding: 0 20px; }
+  .portfolio-hero h1 { font-size: 3.5rem; }
+  
+  .lightbox { padding: 10px; }
+  .close-lightbox { top: 10px; right: 20px; }
+
+  /* Better Mobile Menu Buttons */
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+}
 /* =========================================================
    11. CONTACT & FOOTER (CLEAN REBUILD)
 ========================================================= */
@@ -1143,15 +1295,31 @@ select option {
 
 
 /* =========================================================
-   12. CONSOLIDATED MOBILE OVERRIDES (Max 768px-900px)
+   12. CONSOLIDATED MOBILE OVERRIDES (Restored & Fixed)
 ========================================================= */
 @media (max-width: 900px) {
   /* GENERAL */
   .App { padding-top: 80px; }
   
-  /* HEADER */
-  header { top: 5px; padding-top: 10px; }
+  /* --- HEADER FIXES --- */
+  header { 
+    top: 0 !important; 
+    /* Make it tall enough to hold Logo + Nav + Underline */
+    height: 150px !important; 
+    padding-top: 15px; 
+    /* Force background color immediately so it doesn't look transparent */
+    background: rgba(5, 5, 9, 0.95); 
+    backdrop-filter: blur(12px);
+  }
+  
+  header.scrolled {
+    /* Keep it tall enough even when scrolling */
+    height: 130px !important;
+  }
+
   .logo-wrapper img { height: 45px; }
+  
+  /* ... rest of your mobile styles ... */
 
   /* PARTNERS STRIP */
   .partners-strip { padding: 20px 0; flex-direction: column; gap: 15px; }
@@ -1173,6 +1341,7 @@ select option {
   .service-card-new { width: 100%; height: 350px !important; }
   .service-title { font-size: 2rem; }
   .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-card { padding: 40px 20px; }
 
   /* CREATIVE PARTNERS */
   .cp-container { grid-template-columns: 1fr; gap: 60px; }
@@ -1188,24 +1357,41 @@ select option {
   /* CONTACT / FOOTER */
   .contact-zone { grid-template-columns: 1fr; padding: 80px 20px; gap: 40px; }
   .form-row { grid-template-columns: 1fr; gap: 40px; }
-  .footer-content { flex-direction: column; align-items: flex-start; gap: 60px; }
+  .footer-content { flex-direction: column; align-items: center; gap: 60px; text-align: center; }
   .footer-cols { flex-direction: column; gap: 40px; }
   .footer-bg-text { display: none; }
 
-  /* VELOCITY CTA (CRITICAL MOBILE FIX) */
+  /* VELOCITY CTA (CRITICAL MOBILE FIXES) */
   .velocity-cta-section {
-    /* Make it TALLER so the extra text shows above/below box */
     height: 85vh; 
+    /* Fix: Prevent horizontal scroll caused by angled text */
+    overflow: hidden; 
+    width: 100%;
   }
+  
+  .velocity-angled-wrapper {
+    /* Fix: Adjust angle slightly for mobile width */
+    transform: translate(-50%, -50%) rotate(-10deg);
+    width: 200vw; 
+    gap: 10px;
+  }
+
   .scroller {
-    /* Scale down font but keep it heavy */
     font-size: 4rem; 
+    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
   }
+  
   .cta-interaction-box {
     padding: 40px 20px;
     width: 90%;
+    background: rgba(10,10,10,0.9);
   }
+  
   .cta-content h2 { font-size: 2.5rem; }
+  
+  /* Filter Menu Wrap Fix (Keep this so buttons don't cut off) */
+  .glass-filter-bar { flex-wrap: wrap; width: 95%; border-radius: 20px; }
+  .filter-btn { padding: 8px 16px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }
 }
 
 /* ========================
@@ -1311,3 +1497,135 @@ select option {
 
 /* Hide the unwanted "Hands" or extra icons if they are classes */
 .footer-hands-icon { display: none; }
+
+/* --- DUAL PANEL DESIGN (ImageReveal) --- */
+.dual-panel-section {
+    position: relative;
+    height: 600px; /* Mobile default height */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0; /* Adds some space above and below the section */
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.background-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-container {
+    position: relative;
+    z-index: 2;
+    display: flex; /* Creates the split layout */
+    width: 90%;
+    max-width: 1200px;
+    height: 80%;
+}
+
+/* Base Panel Styles */
+.panel {
+    flex: 1; /* Both sides take 50% width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.75); /* Dark background */
+    backdrop-filter: blur(5px);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    color: white;
+    padding: 20px;
+}
+
+/* Left Panel Animation (Slides from Left) */
+.panel-left {
+    align-items: flex-end; /* Align content to the center seam */
+    transform: translateX(-150%);
+    border-right: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Right Panel Animation (Slides from Right) */
+.panel-right {
+    align-items: flex-start; /* Align content to the center seam */
+    transform: translateX(150%);
+    padding-left: 30px;
+    text-align: left;
+}
+
+/* ACTIVE STATE (Controlled by JS) */
+.dual-panel-section.active .panel-left,
+.dual-panel-section.active .panel-right {
+    transform: translateX(0); /* Meet in the middle */
+}
+
+/* Button Styling */
+.action-btn {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 12px 24px;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 180px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.action-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Text Styling */
+.panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.panel p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+/* --- DESKTOP UPGRADE (Makes it bigger on big screens) --- */
+@media (min-width: 1024px) {
+    .dual-panel-section {
+        height: 800px; /* Taller */
+    }
+
+    .panel {
+        padding: 4rem; /* More breathing room */
+    }
+
+    .panel h2 {
+        font-size: 3.5rem; /* Big, cinematic title */
+    }
+
+    .panel p {
+        font-size: 1.3rem;
+        max-width: 500px;
+    }
+
+    .action-btn {
+        padding: 18px 30px;
+        font-size: 1.2rem;
+        width: 260px;
+        margin: 15px 0;
+    }
+}

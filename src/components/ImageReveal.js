@@ -1,124 +1,78 @@
-// src/components/ImageReveal.js
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import FlowBackground from './FlowBackground'; 
+import React, { useEffect, useRef } from 'react';
+// We will put the specific styles for this in App.css for now
+// or if you have ImageReveal.css, you can import it here.
 
 const ImageReveal = () => {
-  const [activeTab, setActiveTab] = useState('realestate');
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
 
-  // DATA: Ensure your image paths are correct here
-  const tabs = [
-    { 
-      id: 'realestate', 
-      label: 'Real Estate', 
-      title: 'HDR & Flambient Blending',
-      description: 'I manually blend multiple exposures to ensure windows are clear, interiors are bright, and colors are accurate.',
-      before: '/photo1.jpg', 
-      after: '/photo2.jpg' 
-    },
-    { 
-      id: 'wedding', 
-      label: 'Weddings', 
-      title: 'Timeless Color Grading',
-      description: 'My skin tone science ensures you look natural, while the environment pops with cinematic depth.',
-      before: '/photo3.jpg', 
-      after: '/photo4.jpg' 
-    },
-    { 
-      id: 'restore', 
-      label: 'Restoration', 
-      title: 'AI-Powered Restoration',
-      description: 'Using advanced AI models, I reconstruct missing details and colorize vintage memories.',
-      before: '/photo5.jpg', 
-      after: '/photo6.jpg' 
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    // --- THE TIMING FIX ---
+    // rootMargin: "-20%..." creates a "hot zone" in the middle of the screen.
+    // The animation happens earlier than the exact center, making it feel smoother.
+    const options = {
+      root: null,
+      rootMargin: "-20% 0px -20% 0px", 
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          section.classList.add('active'); // Slide IN
+        } else {
+          section.classList.remove('active'); // Slide OUT (closes back up)
+        }
+      });
+    }, options);
+
+    if (section) {
+      observer.observe(section);
     }
-  ];
 
-  const currentPair = tabs.find(t => t.id === activeTab);
-
-  const handleMove = (clientX) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    setSliderPosition((x / rect.width) * 100);
-  };
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
 
   return (
-    <section className="reveal-section">
-      <FlowBackground />
-
-      <div className="reveal-content-grid" style={{ position: 'relative', zIndex: 2 }}>
+    <div className="dual-panel-section" ref={sectionRef}>
         
-        {/* LEFT: DYNAMIC TEXT */}
-        <div className="reveal-text-side">
-          <div className="reveal-tabs">
-            {tabs.map(tab => (
-              <button 
-                key={tab.id}
-                className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <AnimatePresence mode='wait'>
-            <motion.div
-              key={activeTab} 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="dynamic-description"
-            >
-              <h3>{currentPair.title}</h3>
-              <p>{currentPair.description}</p>
-            </motion.div>
-          </AnimatePresence>
+        {/* Background Image */}
+        <div className="background-image">
+            <img 
+              src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
+              alt="Background" 
+            />
         </div>
 
-        {/* RIGHT: THE SLIDER (CORRECTED STRUCTURE) */}
-        <div 
-          className="reveal-container" 
-          ref={containerRef}
-          onMouseMove={(e) => handleMove(e.clientX)}
-          onTouchMove={(e) => handleMove(e.touches[0].clientX)}
-        >
-          {/* BASE LAYER: EDITED (AFTER) IMAGE */}
-          <img src={currentPair.after} alt="Edited" className="reveal-img-bg" draggable="false" />
-          
-          {/* FOREGROUND LAYER: RAW (BEFORE) IMAGE - CLIPPED SECTION */}
-          <div 
-            className="reveal-img-fg" 
-            style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
-          >
-            <img src={currentPair.before} alt="Raw" draggable="false" />
-          </div>
+        {/* Content Container */}
+        <div className="content-container">
+            
+            {/* LEFT PANEL: Buttons */}
+            <div className="panel panel-left">
+                <div className="panel-inner">
+                  <button className="action-btn">Real Estate</button>
+                  <button className="action-btn">Weddings</button>
+                  <button className="action-btn">Restoration</button>
+                </div>
+            </div>
 
-          {/* FIX 1: Hiding Glitch - RAW label sits on the left side */}
-          {/* RAW Label: Hides when handle is pushed far right (95%) */}
-          {sliderPosition < 95 && (
-            <span className="label-badge before">RAW</span>
-          )}
+            {/* RIGHT PANEL: Text */}
+            <div className="panel panel-right">
+                <div className="panel-inner">
+                  <h2>Our Services</h2>
+                  <p>
+                    Experience the highest quality in visual storytelling. 
+                    From capturing the perfect wedding moments to showcasing 
+                    luxury real estate properties.
+                  </p>
+                </div>
+            </div>
 
-          {/* FIX 2: Hiding Glitch - EDITED label sits on the right side */}
-          {/* EDITED Label: Hides when handle is pushed far left (5%) */}
-          {sliderPosition > 5 && (
-            <span className="label-badge after">EDITED</span>
-          )}
-          
-          {/* Single, Clean Handle */}
-          <div className="reveal-handle" style={{ left: `${sliderPosition}%` }}>
-            <div className="handle-circle"><>&#8644;</></div>
-          </div>
         </div>
-
-      </div>
-      <p className="reveal-hint" style={{ position: 'relative', zIndex: 2 }}>Drag slider to compare</p>
-    </section>
+    </div>
   );
 };
 
