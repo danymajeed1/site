@@ -16,6 +16,8 @@ import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage'; // <--- NEW IMPORT
 import PartnersStrip from './components/PartnersStrip';
 import CreativePartners from './components/CreativePartners';
+import TechVault from './components/TechVault';
+import FlowBackground from './components/FlowBackground';
 
 // --- ANIMATION CONFIG ---
 const slideLeft = {
@@ -60,7 +62,7 @@ function App() {
   return (
     <div className="App">
       <Header scrolled={scrolled} />
-
+<FlowBackground />
       <Routes>
         {/* HOME PAGE */}
         <Route path="/" element={
@@ -76,7 +78,7 @@ function App() {
             
               <ImageReveal />
             
-
+              <TechVault />
             <Section variant={floatUp}>
               <ServicesSection />
             </Section>

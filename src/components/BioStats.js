@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Tilt from 'react-parallax-tilt';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import FlowBackground from './FlowBackground'; 
+
 
 // --- COUNTER COMPONENT (Kept the same) ---
 const Counter = ({ from, to }) => {
@@ -57,7 +57,7 @@ const BioStats = () => {
 
   return (
     <section className="bio-section" id="about">
-      <FlowBackground />
+      
 
       <div className="bio-container" style={{ position: 'relative', zIndex: 2 }}>
         
