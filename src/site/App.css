@@ -1,4 +1,4 @@
-
+.flow-bg-canvas, 
 .reveal-img, 
 .reveal-img-clip, 
 .reveal-slider-line {
@@ -45,14 +45,16 @@ body {
    2. PIANO BLACK FLOW BACKGROUND
 ========================================================= */
 .flow-bg-wrapper {
-  position: relative;  /* IMPORTANT */
+  position: absolute;
+  inset: 0;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
   z-index: 0;
   background: #000;
+  overflow: hidden;
 }
 
-
+.flow-bg-canvas { position: absolute; inset: 0; }
 
 .piano-gloss-overlay {
   position: absolute; inset: 0;
@@ -60,37 +62,6 @@ body {
   background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.4) 100%);
   pointer-events: none;
 }
-/* ===== Layering Fix: background always behind ===== */
-.app-content {
-  position: relative;
-  z-index: 1;
-}
-
-.flow-bg-wrapper{
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:#000;
-  overflow:hidden;
-}
-
-/* Add premium glow layers so it doesn’t feel “empty black” */
-.flow-bg-wrapper::before{
-  content:"";
-  position:absolute;
-  inset:-20%;
-  background:
-    radial-gradient(900px 600px at 18% 18%, rgba(124,58,237,0.22), transparent 60%),
-    radial-gradient(900px 600px at 85% 70%, rgba(34,211,238,0.14), transparent 62%),
-    radial-gradient(1200px 800px at 50% 105%, rgba(255,255,255,0.05), transparent 55%);
-  filter: blur(20px);
-  opacity: 1;
-}
-
-
-
-
 
 /* =========================================================
    3. HEADER & NAVIGATION
@@ -823,73 +794,61 @@ select option {
 .cp-visual-bg-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%); z-index: 0; filter: blur(60px); }
 
 /* ========================
-   9. VELOCITY CTA (ANGLED OVERLAY EFFECT) — CLEAN (FRAMER VERSION)
+   9. VELOCITY CTA (ANGLED OVERLAY EFFECT)
 ======================== */
 .velocity-cta-section {
   position: relative;
-  height: 80vh;
-  display: flex;
-  justify-content: center;
+  height: 80vh; 
+  display: flex; 
+  justify-content: center; 
   align-items: center;
   background: transparent;
-  overflow: visible;
-  margin-top: 150px;
+  /* Allow desktop bleed */
+  overflow: visible; 
+  margin-top: 150px; 
   margin-bottom: 150px;
 }
 
 .velocity-angled-wrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120vw;
-  height: 150%;
+  top: 50%; left: 50%;
+  width: 120vw; height: 150%;
   transform: translate(-50%, -50%) rotate(-6deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  z-index: 0;
-  pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 20px; 
+  z-index: 0; pointer-events: none;
 }
 
-/* Each scrolling line wrapper */
 .parallax-text {
   overflow: hidden;
   margin: 0;
   white-space: nowrap;
   display: flex;
-}
-
-/* Outline marquee text */
-.scroller {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  font-size: 7rem;
-  line-height: 0.85;
-  display: flex;
-  white-space: nowrap;
   flex-wrap: nowrap;
+}
+
+.scroller {
+  font-family: 'Oswald', sans-serif; 
+  font-weight: 900; 
+  text-transform: uppercase; 
+  font-size: 7rem; 
+  line-height: 0.85;
+  display: flex; white-space: nowrap; flex-wrap: nowrap;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
-  will-change: transform;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15); 
 }
 
-.scroller span {
-  display: block;
-  margin-right: 40px;
-}
+.scroller span { display: block; margin-right: 40px; }
 
-/* Foreground CTA card */
 .cta-interaction-box {
   position: relative;
-  z-index: 20;
-  background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 20; 
+  background: #0a0a0a; 
+  border: 1px solid rgba(255,255,255,0.2);
   padding: 80px 120px;
   text-align: center;
   border-radius: 4px;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 100px rgba(0,0,0,0.8);
 }
 
 .cta-content h2 {
@@ -916,47 +875,44 @@ select option {
   cursor: pointer;
   letter-spacing: 0.2em;
   margin-top: 30px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .velocity-book-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 30px rgba(255,255,255,0.4);
 }
 
 /* --- MOBILE VELOCITY FIXES --- */
 @media (max-width: 900px) {
   .velocity-cta-section {
     height: 70vh;
-    margin-top: 50px;
+    margin-top: 50px; 
     margin-bottom: 50px;
-    overflow: hidden;
+    /* CRITICAL: Cut off overflow on mobile to prevent side-scroll */
+    overflow: hidden; 
     width: 100%;
   }
 
   .velocity-angled-wrapper {
     transform: translate(-50%, -50%) rotate(-10deg);
-    width: 200vw;
+    width: 200vw; 
     gap: 10px;
   }
-
+  
   .scroller {
-    font-size: 4rem;
+    font-size: 4rem; 
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
   }
 
   .cta-interaction-box {
     padding: 40px 20px;
     width: 90%;
-    background: rgba(10, 10, 10, 0.9);
+    background: rgba(10,10,10,0.9); 
   }
-
-  .cta-content h2 {
-    font-size: 2.5rem;
-  }
+  
+  .cta-content h2 { font-size: 2.5rem; }
 }
-
-
 
 /* =========================================================
    10. PORTFOLIO & LIGHTBOX (WITH MOBILE MENU FIX)
@@ -1782,51 +1738,3 @@ select option {
   transform: translateY(-10px);
   background: rgba(255, 255, 255, 0.06);
 }
-
-
-
-/* ===== Global Shutter Transition (for nav + buttons) ===== */
-body.shutter-on::before,
-body.shutter-on::after {
-  content: "";
-  position: fixed;
-  left: 0;
-  right: 0;
-  height: 50vh;
-  background: #000;
-  z-index: 99999;
-  pointer-events: none;
-  transform: translateY(var(--shutY));
-  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-body.shutter-on::before {
-  top: 0;
-  --shutY: 0%;
-  transform: translateY(-100%);
-}
-
-body.shutter-on::after {
-  bottom: 0;
-  --shutY: 0%;
-  transform: translateY(100%);
-}
-
-body.shutter-on::before,
-body.shutter-on::after {
-  transform: translateY(0%);
-}
-
-/* Optional subtle flash */
-body.shutter-on {
-  box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.05);
-}
-
-/* Make nav buttons look like links */
-nav .nav-link {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-

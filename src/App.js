@@ -1,114 +1,108 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { motion } from "framer-motion";
+import "./App.css";
 
-// --- COMPONENTS ---
-import Header from './components/Header';
-import LensHero from './components/LensHero';
-import BioStats from './components/BioStats';
-import ImageReveal from './components/ImageReveal';
-import ServicesSection from './components/ServicesSection';
-import VelocityCTA from './components/VelocityCTA';
-import ContactFooter from './components/ContactFooter'; // <--- The new combined footer
-import ServicesPage from './pages/ServicesPage';
-import PortfolioPage from './pages/PortfolioPage'; // <--- NEW IMPORT
-import PartnersStrip from './components/PartnersStrip';
-import CreativePartners from './components/CreativePartners';
-import TechVault from './components/TechVault';
-import FlowBackground from './components/FlowBackground';
+import Header from "./components/Header";
+import CinematicHero from "./components/CinematicHero";
+import ShowreelMontage from "./components/ShowreelMontage";
+import BioStats from "./components/BioStats";
+import ImageReveal from "./components/ImageReveal";
+import TechVault from "./components/TechVault";
+import CreativePartners from "./components/CreativePartners";
+import ServicesSection from "./components/ServicesSection";
+import VelocityCTA from "./components/VelocityCTA";
+import ContactFooter from "./components/ContactFooter";
 
-// --- ANIMATION CONFIG ---
+import ServicesPage from "./pages/ServicesPage";
+import PortfolioPage from "./pages/PortfolioPage";
+
+import FlowBackground from "./components/FlowBackground";
+import FlowBand from "./components/FlowBand"; // keep if you’re using it
+
 const slideLeft = {
   hidden: { opacity: 0, x: -100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
-/* const slideRight = {
-  hidden: { opacity: 0, x: 100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
-};
-*/
 const floatUp = {
   hidden: { opacity: 0, y: 100 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
-// Wrapper for animations
-const Section = ({ children, variant }) => {
+const Section = ({ children, variant }) => (
+  <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} variants={variant}>
+    {children}
+  </motion.div>
+);
+
+const FLOW_BEHIND_HERO = false;
+
+function Home() {
+  const heroNode = <CinematicHero />;
+
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      variants={variant}
-      style={{ overflow: 'visible' }} 
-    >
-      {children}
-    </motion.div>
-  );
-};
+    <>
+      {/* HERO (no flow behind it) */}
+      {FLOW_BEHIND_HERO ? <FlowBand>{heroNode}</FlowBand> : heroNode}
 
-function App() {
+{/* SHOWREEL (Video) */}
+<Section variant={floatUp}>
+  <ShowreelMontage />
+</Section>
+
+      {/* ABOUT / TRUST + POST + TECH + VIDEO PROOF */}
+      <FlowBand>
+        <Section variant={slideLeft}>
+          <BioStats />
+        </Section>
+
+        <ImageReveal />
+
+        <TechVault />
+
+        <Section variant={floatUp}>
+          <CreativePartners />
+        </Section>
+      </FlowBand>
+
+      {/* CONVERSION */}
+      <Section variant={floatUp}>
+        <ServicesSection />
+      </Section>
+
+      <Section variant={floatUp}>
+        <VelocityCTA />
+      </Section>
+    </>
+  );
+}
+
+export default function App() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div className="App">
       <Header scrolled={scrolled} />
-<FlowBackground />
+
+      {/* Global flow background (your CSS/hero mask blocks it where needed) */}
+      <FlowBackground />
+
       <Routes>
-        {/* HOME PAGE */}
-        <Route path="/" element={
-          <>
-            <LensHero />
-            
-            <PartnersStrip />
-
-            <Section variant={slideLeft}>
-              <BioStats />
-            </Section>
-
-            
-              <ImageReveal />
-            
-              <TechVault />
-            <Section variant={floatUp}>
-              <ServicesSection />
-            </Section>
-
-            <Section variant={floatUp}>
-              <CreativePartners />
-            </Section>
-
-            <Section variant={floatUp}>
-              <VelocityCTA />
-            </Section>
-          </>
-        } />
-
-        {/* SERVICES PAGE */}
+        <Route path="/" element={<Home />} />
         <Route path="/services" element={<ServicesPage />} />
-        
-        {/* PORTFOLIO PAGE (We will build this next!) */}
         <Route path="/portfolio" element={<PortfolioPage />} />
-        
-        {/* CONTACT PAGE (Redirects to bottom for now) */}
-        <Route path="/contact" element={<div style={{paddingTop: '200px', textAlign:'center'}}><h1>Scroll Down</h1></div>} />
-
+        <Route path="/contact" element={<div style={{ paddingTop: "200px", textAlign: "center" }}><h1>Scroll Down</h1></div>} />
       </Routes>
 
-      {/* THE GRAND FINALE (Visible on all pages) */}
-      <ContactFooter /> 
-
+      <ContactFooter />
     </div>
   );
 }
-
-export default App;

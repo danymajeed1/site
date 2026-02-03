@@ -1,0 +1,28 @@
+/* src/components/FlowBand.css */
+
+.flowband{
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* IMPORTANT: contains z-index stacking */
+}
+
+.flowband__bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.flowband__bg .flow-bg-canvas{
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.flowband__content{
+  position: relative;
+  z-index: 2; /* content ALWAYS above flow */
+}

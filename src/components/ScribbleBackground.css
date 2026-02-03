@@ -1,0 +1,49 @@
+/* src/components/ScribbleBackground.css */
+.scribble{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity: 0.95;
+}
+
+.scribble__svg{
+  position:absolute;
+  inset:-6%;
+  width:112%;
+  height:112%;
+}
+
+.scribble__p{
+  fill:none;
+  stroke: rgba(255,255,255,0.14);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+
+  stroke-dasharray: 18 14;
+  animation: dashMove 7.5s linear infinite;
+}
+
+.scribble__p--b{ stroke: rgba(124,58,237,0.16); animation-duration: 9.2s; }
+.scribble__p--c{ stroke: rgba(34,211,238,0.14); animation-duration: 8.4s; }
+.scribble__p--d{ stroke: rgba(255,255,255,0.09); animation-duration: 10.6s; }
+
+@keyframes dashMove{
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -220; }
+}
+
+.scribble__glow{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(700px 420px at 30% 35%, rgba(124,58,237,0.10), transparent 60%),
+    radial-gradient(700px 420px at 75% 60%, rgba(34,211,238,0.08), transparent 62%);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .scribble__p{ animation:none !important; }
+}
