@@ -1,181 +1,253 @@
 /* src/components/ImageReveal.css */
-/* This forces every possible 'outer' container I might have named to be clear */
-.workstation-outer, 
-.reveal-master-wrapper, 
-.pro-section-outer, 
-.post-prod-wrapper {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-}
 
-.reveal-master-wrapper {
+.post-master-wrapper {
   position: relative;
-  padding: 150px 0;
-  background: transparent !important; /* Force it to be clear */
+  padding: 120px 20px;
+  background: transparent;
   z-index: 10;
-}
-
-/* TITLE STYLE - Matching your minimalist "Unseen" aesthetic */
-.reveal-title-box {
-  text-align: center;
-  margin-bottom: 120px;
-}
-
-.reveal-main-h2 {
-  font-family: 'Montserrat', sans-serif; /* Clean, bold modern font */
-  font-weight: 800;
-  font-size: 4rem;
-  color: white;
-  letter-spacing: 25px; /* Huge spacing for that expensive look */
-  margin: 0;
-  text-transform: uppercase;
-  opacity: 0.95;
-}
-
-/* WORKSTATION LAYOUT */
-.reveal-workstation {
-  display: grid;
-  grid-template-columns: 280px 1fr 280px;
-  gap: 40px;
-  width: 95%;
-  max-width: 1800px;
+  max-width: 1600px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-/* NAVIGATION */
-.reveal-nav-area { display: flex; flex-direction: column; gap: 40px; text-align: right; }
+/* --- HEADER & TABS --- */
+.post-header {
+  text-align: center;
+  margin-bottom: 60px;
+  width: 100%;
+}
 
-.reveal-btn {
+.section-tag {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.post-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem; 
+  color: #fff;
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.post-tabs {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 6px;
+  gap: 6px;
+}
+
+.post-tab-btn {
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.25);
+  color: #888;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: 40px;
   cursor: pointer;
-  transition: 0.5s ease;
+  transition: all 0.3s ease;
 }
 
-.reveal-btn.active {
-  color: white;
-  transform: translateX(-15px);
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+.post-tab-btn:hover { color: #fff; }
+
+.post-tab-btn.active {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(255,255,255,0.2);
 }
 
-/* THE VIEWER (MUCH BIGGER) */
-.reveal-viewer-big {
-  position: relative;
-  height: 750px; /* Big enough for weddings/real estate impact */
-  background: #000;
-  border: 1px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-  box-shadow: 0 60px 120px rgba(0,0,0,0.8);
-}
-
-.reveal-engine-wrap { position: absolute; inset: 0; }
-
-.reveal-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-}
-
-.reveal-img-clip {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow: hidden;
-  z-index: 2;
-  border-right: 2px solid white;
-}
-
-/* SLIDER LINE & GLOW */
-.reveal-slider-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: white;
-  z-index: 5;
-}
-
-.line-glow {
-  position: absolute;
-  inset: 0;
-  width: 6px;
-  left: -3px;
-  background: white;
-  filter: blur(12px);
-  opacity: 0.6;
-}
-
-/* THE GLOWING TECH LABELS */
-.reveal-tags-glow {
-  position: absolute;
-  top: 35px;
+/* --- THE VIEWER STAGE --- */
+.post-viewer-stage {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  padding: 0 50px;
-  z-index: 100; /* Ensure it stays on top of everything */
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-reveal-container {
+  position: relative;
+  width: 100%;
+  /* 16:9 Aspect Ratio Lock for Desktop */
+  aspect-ratio: 16 / 9;
+  max-height: 75vh; 
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: ew-resize;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+  touch-action: pan-y; /* Prevents whole page from dragging when scrubbing sideways */
+}
+
+.post-image-layers {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+
+.post-layer {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none; 
+}
+
+.before-layer {
+  z-index: 2;
+  will-change: clip-path;
+}
+
+.after-layer { z-index: 1; }
+
+/* --- THE SCRUBBER --- */
+.post-scrubber {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  z-index: 10;
+  transform: translateX(-50%);
   pointer-events: none;
+  will-change: left;
 }
 
-.reveal-tags-glow span {
-  font-family: 'IBM Plex Mono', monospace; /* Keep that tech feel */
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 4px;
-  padding: 10px 20px;
+.scrub-line {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px; background: #fff;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.scrub-handle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center; justify-content: center;
+  gap: 2px; color: #fff;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.scrub-handle svg { width: 14px; height: 14px; }
+
+/* --- PREMIUM TAGS --- */
+.post-tags {
+  position: absolute;
+  top: 30px; left: 30px; right: 30px;
+  display: flex; justify-content: space-between;
+  pointer-events: none; z-index: 20;
+}
+
+.post-tags .tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.2em; padding: 8px 16px;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px; color: #fff;
+}
+
+.post-tags .final {
+  color: #000; background: rgba(255,255,255,0.9);
+}
+
+/* --- INTERACTIVE META AREA --- */
+.post-meta-interactive {
+  margin-top: 40px;
+  width: 100%; max-width: 1000px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.post-selector-row {
+  display: flex; justify-content: center; gap: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 20px; margin-bottom: 20px;
+  width: 100%;
+}
+
+.post-select-btn {
+  background: transparent; border: none;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 5px; cursor: pointer; padding: 10px;
+  transition: all 0.3s ease; opacity: 0.4;
+}
+
+.post-select-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+.post-select-btn.active { opacity: 1; }
+
+.ps-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #fff; }
+.ps-title {
+  font-family: 'Montserrat', sans-serif; font-size: 1.1rem;
+  font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+.post-desc {
+  font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
+  color: #888; line-height: 1.6; text-align: center;
+  max-width: 600px; height: 50px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE HORIZONTAL FIX
+───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Restored padding so it doesn't touch edges */
+  .post-master-wrapper { padding: 80px 20px; }
   
-  /* GLASS BACKGROUND */
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  .post-h2 { font-size: 2.8rem; } 
+  .post-tabs { flex-wrap: wrap; justify-content: center; background: transparent; border: none; padding: 0; }
+  .post-tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
   
-  /* NEON GLOW EFFECT */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 
-              inset 0 0 10px rgba(255, 255, 255, 0.1);
-  text-shadow: 0 0 8px #fff;
+  /* Horizontal layout, keeping border radius and spacing */
+  .post-reveal-container { 
+    width: 100%; 
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    /* 4:3 Aspect ratio makes it horizontal but tall enough to see details clearly on a phone */
+    aspect-ratio: 4 / 3; 
+  }
   
-  text-transform: uppercase;
-}
-
-/* Specific highlight for the "Edited" side to make it feel premium */
-.tag-grade {
-  border-color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* RIGHT INFO AREA */
-.reveal-info-area { padding-left: 20px; }
-
-.reveal-h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
-  color: white;
-  margin-bottom: 25px;
-  font-weight: 700;
-}
-
-.reveal-p {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.1rem;
-  line-height: 2.2;
-  color: rgba(255,255,255,0.5);
-}
-
-/* RESPONSIVE */
-@media (max-width: 1300px) {
-  .reveal-workstation { grid-template-columns: 1fr; }
-  .reveal-viewer-big { height: 500px; }
-  .reveal-nav-area { flex-direction: row; justify-content: center; }
-  .reveal-main-h2 { font-size: 2.5rem; letter-spacing: 15px; }
+  .post-tags { top: 15px; left: 15px; right: 15px; }
+  .post-tags .tag { font-size: 0.6rem; padding: 6px 10px; }
+  
+  .post-selector-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    border-bottom: none;
+  }
+  
+  .post-select-btn {
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    padding-bottom: 15px;
+  }
+  
+  .post-desc {
+    font-size: 0.85rem;
+    height: auto;
+    margin-top: 20px;
+  }
 }

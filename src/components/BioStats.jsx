@@ -1,10 +1,9 @@
-// src/components/BioStats.js
 import React, { useState, useEffect, useRef } from 'react';
 import Tilt from 'react-parallax-tilt';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import './BioStats.css'; 
 
-
-// --- COUNTER COMPONENT (Kept the same) ---
+// --- COUNTER COMPONENT ---
 const Counter = ({ from, to }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -27,8 +26,7 @@ const Counter = ({ from, to }) => {
   return <span ref={ref}>{count}</span>;
 };
 
-const BioStats = () => {
-  // 1. MOBILE CHECK
+export default function BioStats() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -37,43 +35,30 @@ const BioStats = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // 2. SCROLL ANIMATION HOOKS (For Mobile Only)
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start end", "center center"] 
-    // "start end" = when top of card hits bottom of screen
-    // "center center" = when center of card hits center of screen
   });
 
-  // Mobile Transformations:
-  // TILT: Starts tilted back 25 degrees, stands up to 0 degrees
   const mobileRotateX = useTransform(scrollYProgress, [0, 1], [25, 0]);
-  // LIGHT: Starts dark (60% brightness), goes to full brightness (100%)
   const mobileFilter = useTransform(scrollYProgress, [0, 1], ["brightness(0.6)", "brightness(1)"]);
-  // SCALE: Slight zoom in as it focuses
   const mobileScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
 
-
   return (
-    <section className="bio-section" id="about">
-      
-
-      <div className="bio-container" style={{ position: 'relative', zIndex: 2 }}>
+    <section className="bio-section-premium" id="about">
+      <div className="bio-container-premium">
         
-        {/* === PHOTO ZONE === */}
-        {/* We use a different component wrapper based on Mobile vs Desktop */}
-        
+        {/* PHOTO ZONE (Your amazing 3D Tilt Effect) */}
         <div className="bio-picture-zone" ref={targetRef}>
           {isMobile ? (
-            /* --- MOBILE VERSION (Scroll Driven) --- */
             <motion.div 
               className="bio-card photo-card"
               style={{
-                rotateX: mobileRotateX, // The "Standing Up" effect
-                filter: mobileFilter,   // The "Lighting Up" effect
+                rotateX: mobileRotateX,
+                filter: mobileFilter,
                 scale: mobileScale,
-                perspective: 1000       // Needs perspective to look 3D
+                perspective: 1000
               }}
             >
               <img src="/me.webp" alt="Dany Majeed" className="bio-img" />
@@ -84,10 +69,9 @@ const BioStats = () => {
               <div className="card-border"></div>
             </motion.div>
           ) : (
-            /* --- DESKTOP VERSION (Mouse Driven) --- */
             <Tilt 
               tiltEnable={true} 
-              trackOnWindow={false} /* FIXED: No longer follows mouse everywhere */
+              trackOnWindow={false}
               tiltMaxAngleX={10} 
               tiltMaxAngleY={10} 
               perspective={1000} 
@@ -106,48 +90,64 @@ const BioStats = () => {
           )}
         </div>
 
-        {/* RIGHT: TEXT CONTENT (Unchanged) */}
-        <div className="bio-content">
-          <motion.h2 
-            initial={{ opacity: 0, x: 50 }}
+        {/* PREMIUM EDITORIAL CONTENT */}
+        <div className="bio-content-premium">
+          <motion.span 
+            className="section-tag"
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bio-title"
+            viewport={{ once: true }}
+          >
+            The Architect
+          </motion.span>
+
+          <motion.h2 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="bio-h2-premium"
           >
             Story Driven. <br/>
-            <span className="highlight-text">Detail Obsessed.</span>
+            <span className="hollow-text">Detail Obsessed.</span>
           </motion.h2>
           
           <motion.p 
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bio-text"
+            viewport={{ once: true }}
+            className="bio-p-premium"
           >
-            I don't just take pictures; I build visual assets that sell brands and properties.
-            With a background in <strong>Computer Science</strong>, I combine technical precision with 
-            artistic intuition to deliver perfection in every pixel.
+            I build visual assets that sell brands, properties, and stories. 
+            By combining technical <span className="text-glow">Computer Science</span> logic with 
+            artistic intuition, I deliver absolute perfection in every frame.
           </motion.p>
 
-          <div className="stats-grid">
-            <div className="stat-box">
-              <span className="stat-num stat-pop"><Counter from={0} to={5} />+</span>
+          {/* STATS BENTO DASHBOARD */}
+          <motion.div 
+            className="bio-stats-dashboard"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <div className="stat-block">
+              <span className="stat-number"><Counter from={0} to={5} />+</span>
               <span className="stat-label">Years Exp.</span>
             </div>
-            <div className="stat-box">
-              <span className="stat-num stat-pop"><Counter from={0} to={100} />+</span>
+            <div className="stat-block">
+              <span className="stat-number"><Counter from={0} to={100} />+</span>
               <span className="stat-label">Projects</span>
             </div>
-            <div className="stat-box">
-              <span className="stat-num stat-pop">5<span className="star-icon">★</span></span>
-              <span className="stat-label">Client Rating</span>
+            <div className="stat-block">
+              <span className="stat-number">5<span className="star">★</span></span>
+              <span className="stat-label">Rating</span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
       </div>
     </section>
   );
-};
-
-export default BioStats;
+}

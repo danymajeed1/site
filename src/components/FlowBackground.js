@@ -18,8 +18,15 @@ const FlowBackground = () => {
     const step = isMobile ? 40 : 30;
 
     const resize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight; // FIXED: viewport height
+      // THE FIX: Retina Display scaling keeps lines 1px thin and perfectly crisp
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+
       lines = [];
       for (let y = 0; y < height + gap; y += gap) {
         lines.push({ baseY: y, offset: Math.random() * 10 });
@@ -34,7 +41,8 @@ const FlowBackground = () => {
       ctx.fillRect(0, 0, width, height);
 
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+      // Made the lines a subtle, ghostly white
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
       ctx.lineWidth = 1;
 
       for (const line of lines) {

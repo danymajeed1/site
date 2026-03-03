@@ -1,0 +1,160 @@
+/* src/components/TechVault.css */
+
+.arsenal-section {
+  padding: 120px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.arsenal-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.arsenal-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0;
+}
+
+/* THE BENTO GRID (Desktop) */
+.arsenal-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+/* Apple-style Glass Cards */
+.arsenal-card {
+  position: relative;
+  background: rgba(10, 10, 12, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.4s ease;
+  min-height: 220px;
+}
+
+.arsenal-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-5px);
+  /* Adds a subtle glowing light in the top corner on hover */
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 70%), rgba(15, 15, 18, 0.8);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* Grid Spanning Logic */
+.span-8 { grid-column: span 8; }
+.span-4 { grid-column: span 4; }
+
+.arsenal-content {
+  position: relative;
+  z-index: 2;
+}
+
+.arsenal-cat {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.arsenal-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.arsenal-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #bbb;
+  line-height: 1.6;
+  max-width: 85%;
+  margin: 0;
+}
+
+/* THE GIANT HOLLOW BACKGROUND TEXT */
+.arsenal-hero {
+  position: absolute;
+  bottom: -15px;
+  right: -10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 6rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.arsenal-card:hover .arsenal-hero {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+  transform: scale(1.05) translate(-10px, -10px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE OPTIMIZATION (THE SCROLL FIX)
+───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .arsenal-section {
+    padding: 80px 20px;
+  }
+  
+  .arsenal-h2 {
+    font-size: 3rem;
+  }
+
+  /* Break the grid into a sleek, vertical stack */
+  .arsenal-grid {
+    display: flex; 
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* The magic fix: Shrink the footprint! */
+  .arsenal-card {
+    padding: 22px 20px;
+    min-height: auto; 
+    border-radius: 12px;
+  }
+
+  .arsenal-title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .arsenal-desc {
+    font-size: 0.8rem;
+    max-width: 100%; 
+  }
+
+  .arsenal-hero {
+    font-size: 3.5rem; 
+    bottom: -5px;
+    right: -5px;
+    /* Fade it out slightly so the tiny text stays readable */
+    opacity: 0.4; 
+  }
+  
+  .arsenal-card:hover .arsenal-hero {
+    transform: none; /* Disable shift on mobile to prevent layout jumping */
+  }
+}

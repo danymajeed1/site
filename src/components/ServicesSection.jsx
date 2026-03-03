@@ -1,10 +1,8 @@
-// src/components/ServicesSection.js
+// src/components/ServicesSection.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-// --- FIXED IMAGE IMPORTS ---
-// This guarantees the images load correctly regardless of folder structure
 import weddingImg from '../assets/images/wedding2.webp';
 import realEstateImg from '../assets/images/realestate-cover.jpg';
 import portraitImg from '../assets/images/portrait.jpg';
@@ -16,36 +14,39 @@ const services = [
     title: 'Luxury Weddings', 
     subtitle: 'Timeless Romance',
     img: weddingImg,
-    link: '/services',
-    area: 'wed' // Custom Grid Area Name
+    portfolioLink: '/portfolio', // Takes them to your pictures
+    servicesLink: '/services',   // Takes them to your pricing
+    area: 'wed' 
   },
   { 
     id: 'portraits', 
     title: 'Editorial Portraits', 
     subtitle: 'Personal Branding',
     img: portraitImg,
-    link: '/services',
-    area: 'por' // Vertical Area
+    portfolioLink: '/portfolio',
+    servicesLink: '/services',
+    area: 'por' 
   },
   { 
     id: 'realestate', 
     title: 'Real Estate', 
     subtitle: 'Architectural Precision',
     img: realEstateImg,
-    link: '/services',
-    area: 'res' // Horizontal Area
+    portfolioLink: '/portfolio',
+    servicesLink: '/services',
+    area: 'res' 
   },
   { 
     id: 'events', 
     title: 'Corporate Events', 
     subtitle: 'Dynamic Coverage',
     img: eventsImg,
-    link: '/services',
-    area: 'eve' // Horizontal Area
+    portfolioLink: '/portfolio',
+    servicesLink: '/services',
+    area: 'eve' 
   }
 ];
 
-// Stagger Animation
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -59,7 +60,7 @@ const tileVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const ServicesSection = () => {
+export default function ServicesSection() {
   return (
     <section className="services-section" id="services">
       <div className="services-header">
@@ -85,7 +86,8 @@ const ServicesSection = () => {
             className={`service-card-new area-${service.area}`}
             variants={tileVariants}
           >
-            <Link to={service.link} className="service-link-wrapper">
+            {/* Switched from a global <Link> to a structural <div> */}
+            <div className="service-card-inner">
               
               <div className="service-img-wrapper">
                 <img src={service.img} alt={service.title} />
@@ -97,19 +99,18 @@ const ServicesSection = () => {
                 <span className="service-subtitle">{service.subtitle}</span>
                 <h3 className="service-title">{service.title}</h3>
                 
-                <div className="service-action">
-                  <span>Explore</span>
-                  <div className="arrow-icon">→</div>
+                {/* DUAL BUTTON LAYOUT */}
+                <div className="service-dual-actions">
+                  <Link to={service.portfolioLink} className="btn-showcase">Showcase</Link>
+                  <Link to={service.servicesLink} className="btn-book">Book Now</Link>
                 </div>
               </div>
 
               <div className="service-border"></div>
-            </Link>
+            </div>
           </motion.div>
         ))}
       </motion.div>
     </section>
   );
-};
-
-export default ServicesSection;
+}
