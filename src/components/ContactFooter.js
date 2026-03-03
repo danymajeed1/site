@@ -1,15 +1,9 @@
 // src/components/ContactFooter.js
 import React, { useRef, useState } from 'react';
-import { useScroll } from 'framer-motion';
 
 const ContactFooter = () => {
   const containerRef = useRef(null);
   const [selectedService, setSelectedService] = useState(""); 
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"]
-  });
 
   // --- SCROLL TO TOP LOGIC ---
   const scrollToTop = () => {
