@@ -3,6 +3,8 @@ import Tilt from 'react-parallax-tilt';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import './BioStats.css'; 
 
+import bioHeadshot from '../assets/me.webp';
+
 // --- COUNTER COMPONENT ---
 const Counter = ({ from, to }) => {
   const ref = useRef(null);
@@ -61,7 +63,7 @@ export default function BioStats() {
                 perspective: 1000
               }}
             >
-              <img src="/me.webp" alt="Dany Majeed" className="bio-img" />
+              <img src={bioHeadshot} alt="Dany Majeed" className="bio-img" />
               <div className="bio-overlay">
                 <div className="bio-badge">Creative Director</div>
                 <h3>Dany Majeed</h3>
@@ -79,7 +81,7 @@ export default function BioStats() {
               className="bio-tilt-wrapper"
             >
               <div className="bio-card photo-card">
-                <img src="/me.webp" alt="Dany Majeed" className="bio-img" />
+                <img src={bioHeadshot} alt="Dany Majeed" className="bio-img" />
                 <div className="bio-overlay">
                   <div className="bio-badge">Creative Director</div>
                   <h3>Dany Majeed</h3>

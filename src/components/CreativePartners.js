@@ -2,6 +2,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import lumisLogo from '../assets/lumis.png';
+import meeksLogo from '../assets/uncle-meeks.jpg';
+
 const CreativePartners = () => {
   return (
     <section className="creative-partners-section">
@@ -32,29 +35,45 @@ const CreativePartners = () => {
 
           <div className="cp-logos">
              
-             {/* PARTNER 1: LUMI'S CREPES (With Logo) */}
+             {/* PARTNER 1: LUMI'S CREPES */}
              <div className="cp-logo-row">
-                {/* Ensure 'lumis.png' is in your PUBLIC folder */}
                 <div className="partner-avatar">
-                  <img src="/lumis.png" alt="Lumi's Crepes" />
+                  <img src={lumisLogo} alt="Lumi's Crepes" />
                 </div>
                 <div className="cp-logo-text">
-                  <h3>LUMI'S CREPES</h3>
+                  <div className="brand-name-row">
+                    <h3>LUMI'S CREPES</h3>
+                    <a href="https://www.instagram.com/lumiscrepes" target="_blank" rel="noopener noreferrer" className="partner-ig-icon" aria-label="Lumi's Crepes Instagram">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
+                    </a>
+                  </div>
                   <span>Official Media Partner</span>
                 </div>
              </div>
 
              {/* PARTNER 2: UNCLE MEEK'S */}
              <div className="cp-logo-row">
-                    {/* NEW: Using the downloaded image */}
-                    <div className="partner-avatar">
-                        <img src="/uncle-meeks.jpg" alt="Uncle Meek's Cuisine" />
+                <div className="partner-avatar">
+                    <img src={meeksLogo} alt="Uncle Meek's Cuisine" />
+                </div>
+                <div className="cp-logo-text">
+                    <div className="brand-name-row">
+                      <h3>UNCLE MEEK'S CUISINE</h3>
+                      <a href="https://www.instagram.com/unclemeekscuisine/" target="_blank" rel="noopener noreferrer" className="partner-ig-icon" aria-label="Uncle Meek's Cuisine Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                      </a>
                     </div>
-                    <div className="cp-logo-text">
-                        <h3>UNCLE MEEK'S CUISINE</h3>
-                        <span>Cuisine & Content</span>
-                    </div>
-                    </div>
+                    <span>Cuisine & Content</span>
+                </div>
+             </div>
 
           </div>
         </div>
@@ -63,25 +82,22 @@ const CreativePartners = () => {
         <div className="cp-visual-side">
           <div className="phone-bezel">
             <div className="phone-screen">
-              {/* UPDATED REEL LINK */}
-           <video 
-  controls={false}      
-  autoPlay              
-  muted                 /* CRITICAL for mobile inline playback */
-  loop                  
-  playsInline           /* CRITICAL for iOS/Android */
-  poster="/chef-reel-poster.jpg" 
-  preload="metadata" 
-  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
->
-  <source src="/chef-reel-optimized.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+               <video 
+                  controls={false}      
+                  autoPlay              
+                  muted                 
+                  loop                  
+                  playsInline           
+                  poster="/chef-reel-poster.jpg" 
+                  preload="metadata" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                >
+                  <source src="/chef-reel-optimized.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
             </div>
-            {/* Glossy reflection on phone */}
             <div className="phone-gloss"></div>
           </div>
-          
           <div className="cp-visual-bg-glow"></div>
         </div>
 

@@ -1,28 +1,25 @@
 // src/components/ServicesSection.jsx
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import weddingImg from '../assets/images/wedding2.webp';
-import realEstateImg from '../assets/images/realestate-cover.jpg';
-import portraitImg from '../assets/images/portrait.jpg';
-import eventsImg from '../assets/images/events.jpg';
+// NO MORE IMAGE IMPORTS HERE! 🎉
 
 const services = [
   { 
     id: 'weddings', 
     title: 'Luxury Weddings', 
     subtitle: 'Timeless Romance',
-    img: weddingImg,
-    portfolioLink: '/portfolio', // Takes them to your pictures
-    servicesLink: '/services',   // Takes them to your pricing
+    img: '/wedding2.webp', // <--- Now pointing directly to the public folder
+    portfolioLink: '/portfolio', 
+    servicesLink: '/services',   
     area: 'wed' 
   },
   { 
     id: 'portraits', 
     title: 'Editorial Portraits', 
     subtitle: 'Personal Branding',
-    img: portraitImg,
+    img: '/portrait.jpg',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'por' 
@@ -31,7 +28,7 @@ const services = [
     id: 'realestate', 
     title: 'Real Estate', 
     subtitle: 'Architectural Precision',
-    img: realEstateImg,
+    img: '/realestate-cover.jpg',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'res' 
@@ -40,7 +37,7 @@ const services = [
     id: 'events', 
     title: 'Corporate Events', 
     subtitle: 'Dynamic Coverage',
-    img: eventsImg,
+    img: '/events.jpg',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'eve' 
@@ -61,6 +58,25 @@ const tileVariants = {
 };
 
 export default function ServicesSection() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
+
+  // The Global Shutter Function (with Ninja Scroll)
+  const shutterTo = useCallback((to) => {
+    if (to === path) return;
+    document.body.classList.add("shutter-on");
+    
+    window.setTimeout(() => {
+      navigate(to);
+      window.scrollTo(0, 0); // Snaps to top in the dark
+      
+      window.setTimeout(() => {
+        document.body.classList.remove("shutter-on");
+      }, 60);
+    }, 380); 
+  }, [navigate, path]);
+
   return (
     <section className="services-section" id="services">
       <div className="services-header">
@@ -86,7 +102,6 @@ export default function ServicesSection() {
             className={`service-card-new area-${service.area}`}
             variants={tileVariants}
           >
-            {/* Switched from a global <Link> to a structural <div> */}
             <div className="service-card-inner">
               
               <div className="service-img-wrapper">
@@ -99,10 +114,10 @@ export default function ServicesSection() {
                 <span className="service-subtitle">{service.subtitle}</span>
                 <h3 className="service-title">{service.title}</h3>
                 
-                {/* DUAL BUTTON LAYOUT */}
+                {/* DUAL BUTTON LAYOUT (Using shutterTo) */}
                 <div className="service-dual-actions">
-                  <Link to={service.portfolioLink} className="btn-showcase">Showcase</Link>
-                  <Link to={service.servicesLink} className="btn-book">Book Now</Link>
+                  <button onClick={() => shutterTo(service.portfolioLink)} className="btn-showcase">Showcase</button>
+                  <button onClick={() => shutterTo(service.servicesLink)} className="btn-book">Book Now</button>
                 </div>
               </div>
 

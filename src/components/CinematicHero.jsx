@@ -1,13 +1,8 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from "react";
 import Tilt from "react-parallax-tilt";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./CinematicHero.css";
-
-import weddingImg    from "../assets/images/wedding2.webp";
-import realEstateImg from "../assets/images/realestate-cover.jpg";
-import portraitImg   from "../assets/images/portrait.jpg";
-import eventsImg     from "../assets/images/events.jpg";
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
@@ -172,8 +167,6 @@ function TopoCanvas() {
         const chains=buildChains(segs);
         
         ctx.beginPath();
-        // Cool, muted steel blue (not white)
-        // ctx.strokeStyle=`rgba(150, 170, 200, ${alpha})`;
         // Change from the bright (200,215,255) to a darker, stealthy color
         ctx.strokeStyle = `rgba(100, 120, 160, ${alpha})`;
         // Thinner, sharper lines
@@ -196,16 +189,38 @@ function TopoCanvas() {
 const AUTO_MS = 8500; 
 
 export default function CinematicHero() {
-  const navigate=useNavigate();
-  const shots=useMemo(()=>[
-    {id:"weddings",   label:"Weddings",    title:"Cinematic Stories.",       sub:"Editorial emotion. Film-inspired color.",    img:weddingImg   },
-    {id:"realestate", label:"Real Estate", title:"Architectural Precision.", sub:"HDR balance. Detail that sells.",            img:realEstateImg},
-    {id:"portraits",  label:"Portraits",   title:"Modern Design.",           sub:"Personal branding with direction.",          img:portraitImg  },
-    {id:"events",     label:"Events",      title:"Clean Coverage.",          sub:"Dynamic moments captured consistently.",     img:eventsImg    },
-  ],[]);
+  // ROUTING HOOKS
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
 
+  // PUBLIC IMAGE DATA ARRAY
+  const shots = useMemo(() => [
+    { id: "weddings",   label: "Weddings",    title: "Cinematic Stories.",       sub: "Editorial emotion. Film-inspired color.",    img: "wedding/10.webp" },
+    { id: "realestate", label: "Real Estate", title: "Architectural Precision.", sub: "HDR balance. Detail that sells.",            img: "realestate/2.webp" },
+    { id: "portraits",  label: "Portraits",   title: "Modern Design.",           sub: "Personal branding with direction.",          img: "portrait/1.webp" },
+    { id: "events",     label: "Events",      title: "Clean Coverage.",          sub: "Dynamic moments captured consistently.",     img: "event/1.webp" },
+  ], []);
+
+  // GLOBAL SHUTTER FUNCTION
+  const shutterTo = useCallback((to) => {
+    if (to === path) return;
+    document.body.classList.add("shutter-on");
+    
+    window.setTimeout(() => {
+      navigate(to);
+      
+      // Snap to the top of the page while the screen is pitch black!
+      window.scrollTo(0, 0); 
+
+      window.setTimeout(() => {
+        document.body.classList.remove("shutter-on");
+      }, 60);
+    }, 380); 
+  }, [navigate, path]);
+
+  // LOCAL STATE
   const [active, setActive]=useState(0);
-  const [shutter, setShutter ]=useState(false);
   const [progress, setProgress]=useState(0);
   const [hover, setHover]=useState(false);
   const userPaused=useRef(false);
@@ -245,10 +260,7 @@ export default function CinematicHero() {
 
       <motion.div className="hero9__frame" initial={{opacity:0,y:28}} animate={{opacity:1,y:0}} transition={{duration:1.2,ease:[0.16,1,0.3,1]}}>
         <div className="hero9__posterWrap">
-          {/* 1. TACTILE SQUISH: Pushes the whole poster in when pressed on mobile */}
           <motion.div whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
-            
-            {/* 2. GYROSCOPE ENABLED: The image will now tilt as you move your phone */}
             <Tilt 
               tiltEnable 
               trackOnWindow={false} 
@@ -268,11 +280,8 @@ export default function CinematicHero() {
                 onTouchEnd={() => setHover(false)}
                 onTouchCancel={() => setHover(false)}
               >
-                
-                {/* ─── NEW: MOBILE HINT PILL ─── */}
                 <div className="hero9__mobileHint">Hold for Color</div>
 
-                {/* SMOOTH CROSSFADE FIX */}
                 <AnimatePresence mode="wait">
                   <motion.div key={shots[active].id} className="hero9__img-group" initial={{opacity:0, scale:1.05}} animate={{opacity:1, scale:1.0}} exit={{opacity:0}} transition={{duration:1.2}}>
                     <img src={shots[active].img} alt={shots[active].label} className="hero9__img hero9__img--bw" />
@@ -310,9 +319,19 @@ export default function CinematicHero() {
             </motion.p>
           </AnimatePresence>
 
-          <div className="hero9__actions">
-            <button className="hero9__btn hero9__btnPrimary" onClick={()=>{setShutter(true); setTimeout(()=>navigate("/portfolio"),580);}}>Showcase</button>
-            <a className="hero9__btn hero9__btnGhost" href="#contact">Inquire</a>
+         <div className="hero9__actions">
+            <button 
+              className="hero9__btn hero9__btnPrimary" 
+              onClick={() => shutterTo("/portfolio")}
+            >
+              Showcase
+            </button>
+            <button 
+              className="hero9__btn hero9__btnGhost" 
+              onClick={() => shutterTo("/contact")} 
+            >
+              Inquire
+            </button>
           </div>
 
           <div className="hero9__sheet" aria-label="Select category">
@@ -329,13 +348,6 @@ export default function CinematicHero() {
 
       <div className="hero9__blend" aria-hidden="true"/>
 
-      <AnimatePresence>
-        {shutter&&(
-          <motion.div className="hero9__shutter" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-            <motion.div className="s-circle" initial={{scale:0}} animate={{scale:3}} transition={{duration:0.6,ease:"circIn"}}/><motion.div className="s-flash" initial={{opacity:0}} animate={{opacity:[0,1,0]}} transition={{delay:0.4,duration:0.3}}/>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

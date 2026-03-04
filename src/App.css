@@ -1015,6 +1015,57 @@ select option {
 .phone-gloss { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 40%); pointer-events: none; border-radius: 35px; z-index: 20; }
 .cp-visual-bg-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%); z-index: 0; filter: blur(60px); }
 
+/* ─── THE BRAND NAME & ICON ROW ─── */
+.brand-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* Forces them to stay on the same line */
+}
+
+.brand-name-row h3 {
+  margin: 0 !important;
+  line-height: 1.2;
+}
+
+.partner-ig-icon {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  flex-shrink: 0; /* CRITICAL: Tells the phone NEVER to squish the icon */
+}
+
+.partner-ig-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.partner-ig-icon:hover {
+  color: #fff;
+  transform: scale(1.15) translateY(-1px);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+/* ─── MOBILE ONLY ADJUSTMENTS ─── */
+@media (max-width: 900px) {
+  .brand-name-row {
+    gap: 8px;
+    justify-content: flex-start; /* Ensures it stays locked to the left */
+  }
+
+  .brand-name-row h3 {
+    /* Slightly smaller font so the long name and icon fit on narrow iPhones */
+    font-size: 0.85rem !important; 
+    white-space: nowrap; /* Prevents the text from stacking on top of itself */
+  }
+
+  .partner-ig-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 /* ========================
    9. VELOCITY CTA (ANGLED OVERLAY EFFECT) — CLEAN (FRAMER VERSION)
 ======================== */
@@ -1978,47 +2029,193 @@ select option {
 
 
 
-/* ===== Global Shutter Transition (for nav + buttons) ===== */
-body.shutter-on::before,
-body.shutter-on::after {
+/* ===== Global Camera Shutter Transition ===== */
+
+/* 1. The Base State (Shutter Open / Hidden) */
+body::before,
+body::after {
   content: "";
   position: fixed;
   left: 0;
-  right: 0;
-  height: 50vh;
-  background: #000;
-  z-index: 99999;
+  width: 100%;
+  height: 50vh; /* Each blade covers half the screen */
+  background: #050505; /* Deep black */
+  z-index: 999999;
   pointer-events: none;
-  transform: translateY(var(--shutY));
-  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Fast, snappy, mechanical easing */
+  transition: transform 0.35s cubic-bezier(0.8, 0, 0.2, 1); 
 }
 
-body.shutter-on::before {
+/* Top Blade hides above the screen */
+body::before {
   top: 0;
-  --shutY: 0%;
   transform: translateY(-100%);
+  border-bottom: 2px solid #222; /* Gives it a physical "blade" edge */
 }
 
-body.shutter-on::after {
+/* Bottom Blade hides below the screen */
+body::after {
   bottom: 0;
-  --shutY: 0%;
   transform: translateY(100%);
+  border-top: 2px solid #222;
 }
 
+/* 2. The Active State (Shutter Closed) */
+/* When we add the 'shutter-on' class to the body, the blades snap to the middle */
 body.shutter-on::before,
 body.shutter-on::after {
-  transform: translateY(0%);
+  transform: translateY(0);
 }
 
-/* Optional subtle flash */
+/* Optional: Slight flash effect when shutter fires */
 body.shutter-on {
   box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.05);
 }
 
-/* Make nav buttons look like links */
-nav .nav-link {
-  background: transparent;
-  border: none;
-  cursor: pointer;
+/* =========================================================
+   PORTFOLIO MASONRY OVERLAYS
+========================================================= */
+.masonry-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+  opacity: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 25px;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
+.masonry-item:hover .masonry-overlay {
+  opacity: 1;
+}
+
+.cat-badge {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 4px;
+  transform: translateY(15px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.masonry-item:hover .cat-badge {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   PRO LIGHTBOX CONTROLS
+========================================================= */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  z-index: 3001;
+}
+
+.lightbox-nav:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-nav.left { left: 40px; }
+.lightbox-nav.right { right: 40px; }
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.5);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  z-index: 3001;
+}
+
+.close-lightbox {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.close-lightbox:hover {
+  background: #fff;
+  color: #000;
+  transform: rotate(90deg);
+}
+
+/* Hide navigation arrows on phones so they don't cover the image */
+@media (max-width: 900px) {
+  .lightbox-nav { display: none; }
+  .lightbox-counter { bottom: 20px; }
+}
+
+/* =========================================================
+   LIGHTBOX INQUIRE BUTTON
+========================================================= */
+.lightbox-inquire-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 3005;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.lightbox-inquire-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(255,255,255,0.2);
+}
+
+/* MOBILE FIX: Move it to the bottom center so it fits perfectly */
+@media (max-width: 900px) {
+  .lightbox-inquire-btn {
+    bottom: 55px; /* Sits just above the counter */
+    right: 50%;
+    transform: translateX(50%);
+    width: 85%; /* Nice wide button for thumbs to easily tap */
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .lightbox-inquire-btn:hover {
+    transform: translateX(50%) translateY(-2px);
+  }
+}

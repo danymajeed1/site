@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import myLogo from '../assets/logo.png';
 
 const Header = ({ scrolled }) => {
   const location = useLocation();
@@ -27,15 +28,20 @@ const Header = ({ scrolled }) => {
   const isActive = (route) => path === route;
 
   const shutterTo = useCallback((to) => {
-    if (to === path) return;
-    document.body.classList.add("shutter-on");
-    window.setTimeout(() => {
-      navigate(to);
+      if (to === path) return;
+      document.body.classList.add("shutter-on");
+      
       window.setTimeout(() => {
-        document.body.classList.remove("shutter-on");
-      }, 60);
-    }, 520);
-  }, [navigate, path]);
+        navigate(to);
+        
+        // NEW: Snap to the top of the page while the screen is pitch black!
+        window.scrollTo(0, 0); 
+  
+        window.setTimeout(() => {
+          document.body.classList.remove("shutter-on");
+        }, 60);
+      }, 380); 
+    }, [navigate, path]);
 
   return (
     <header className={`${scrolled ? "scrolled" : ""} ${!showNav ? "nav-hidden" : ""}`}>
@@ -44,7 +50,7 @@ const Header = ({ scrolled }) => {
 
       <div className="logo-wrapper">
         <button type="button" onClick={() => shutterTo("/")} className="logo-btn">
-          <img src="/logo.png" alt="Dany Majeed" className="logo" />
+          <img src={myLogo} className="logo" alt="Dany Majeed" />
         </button>
       </div>
 
