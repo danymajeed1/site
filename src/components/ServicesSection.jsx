@@ -10,7 +10,7 @@ const services = [
     id: 'weddings', 
     title: 'Luxury Weddings', 
     subtitle: 'Timeless Romance',
-    img: '/wedding2.webp', // <--- Now pointing directly to the public folder
+    img: 'wedding/1.webp', // <--- Now pointing directly to the public folder
     portfolioLink: '/portfolio', 
     servicesLink: '/services',   
     area: 'wed' 
@@ -19,7 +19,7 @@ const services = [
     id: 'portraits', 
     title: 'Editorial Portraits', 
     subtitle: 'Personal Branding',
-    img: '/portrait.jpg',
+    img: 'portraits/1.webp',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'por' 
@@ -28,7 +28,7 @@ const services = [
     id: 'realestate', 
     title: 'Real Estate', 
     subtitle: 'Architectural Precision',
-    img: '/realestate-cover.jpg',
+    img: 'realestate/11.webp',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'res' 
@@ -37,7 +37,7 @@ const services = [
     id: 'events', 
     title: 'Corporate Events', 
     subtitle: 'Dynamic Coverage',
-    img: '/events.jpg',
+    img: 'event/3.webp',
     portfolioLink: '/portfolio',
     servicesLink: '/services',
     area: 'eve' 

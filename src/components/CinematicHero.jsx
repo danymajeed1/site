@@ -198,8 +198,8 @@ export default function CinematicHero() {
   const shots = useMemo(() => [
     { id: "weddings",   label: "Weddings",    title: "Cinematic Stories.",       sub: "Editorial emotion. Film-inspired color.",    img: "wedding/10.webp" },
     { id: "realestate", label: "Real Estate", title: "Architectural Precision.", sub: "HDR balance. Detail that sells.",            img: "realestate/2.webp" },
-    { id: "portraits",  label: "Portraits",   title: "Modern Design.",           sub: "Personal branding with direction.",          img: "portrait/1.webp" },
-    { id: "events",     label: "Events",      title: "Clean Coverage.",          sub: "Dynamic moments captured consistently.",     img: "event/1.webp" },
+    { id: "portraits",  label: "Portraits",   title: "Modern Design.",           sub: "Personal branding with direction.",          img: "portraits/2.webp" },
+    { id: "events",     label: "Events",      title: "Clean Coverage.",          sub: "Dynamic moments captured consistently.",     img: "event/3.webp" },
   ], []);
 
   // GLOBAL SHUTTER FUNCTION
