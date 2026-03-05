@@ -4,7 +4,7 @@ import './ImageReveal.css';
 
 const database = {
   "real-estate": [
-    { id: "re1", before: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1920", after: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1920", title: "HDR Window Pulls", desc: "Neutralizing harsh exterior light and recovering deep interior shadow detail." },
+    { id: "re1", before: "reveal/1.webp", after: "reveal/2.webp", title: "HDR Window Pulls", desc: "Neutralizing harsh exterior light and recovering deep interior shadow detail." },
     { id: "re2", before: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1920", after: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1920", title: "Twilight Conversion", desc: "Transforming flat daylight captures into premium, mood-driven twilight real estate." },
     { id: "re3", before: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1920", after: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1920", title: "Color Cast Removal", desc: "Stripping mixed indoor lighting temperatures to create pure, clean whites and natural tones." }
   ],
@@ -95,23 +95,23 @@ export default function ImageReveal() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {/* AFTER IMAGE (Bottom Layer) */}
+              {/* RIGHT SIDE (Bottom Layer) */}
               <div 
                 className="post-layer after-layer" 
-                style={{ backgroundImage: `url(${activeData.after})` }} 
+                style={{ backgroundImage: `url(${activeData.before})` }} 
               />
               
-              {/* BEFORE IMAGE (Top Layer, Clipped inline for guaranteed Safari support) */}
+              {/* LEFT SIDE (Top Layer, Clipped to the scrubber) */}
               <div 
                 className="post-layer before-layer" 
                 style={{ 
-                  backgroundImage: `url(${activeData.before})`,
+                  backgroundImage: `url(${activeData.after})`,
                   clipPath: `polygon(0 0, ${sliderPos}% 0, ${sliderPos}% 100%, 0 100%)`,
                   WebkitClipPath: `polygon(0 0, ${sliderPos}% 0, ${sliderPos}% 100%, 0 100%)`
                 }} 
               />
 
-              {/* SCRUBBER (Positioned inline) */}
+              {/* SCRUBBER */}
               <div 
                 className="post-scrubber" 
                 style={{ left: `${sliderPos}%` }}

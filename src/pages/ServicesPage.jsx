@@ -7,83 +7,135 @@ import { PopupModal } from "react-calendly";
 import { HashLink } from 'react-router-hash-link'; // Needed for scrolling to contact
 
 // --- DATA ---
+// src/pages/ServicesPage.js
+
+const categories = [
+  { id: 'portrait', label: 'Portraits' },
+  { id: 'wedding', label: 'Weddings' },
+  { id: 'realestate', label: 'Real Estate' },
+  { id: 'events', label: 'Events' }
+];
+
 const serviceData = {
-  realestate: [
-    {
-      title: 'Essential',
-      price: '$250',
-      desc: 'Perfect for standard MLS listings.',
-      features: ['25+ HDR Photos', 'Blue Sky Replacement', '48hr Turnaround', 'Print & Web Size'],
-      recommended: false,
-      calendlyLink: "https://calendly.com/danymajeed/essential-re" 
+  portrait: [
+    { 
+      title: 'Signature', 
+      price: '$300', 
+      desc: 'High-end editorial look for individuals and brands.', 
+      features: ['60 Minute Session', 'Studio Lighting Setup', 'Unlimited Captures', 'Professional Retouching'], 
+      recommended: false, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
     },
-    {
-      title: 'Cinematic',
-      price: '$450',
-      desc: 'For luxury listings that need emotion.',
-      features: ['50+ Flambient Photos', '60sec Highlight Video', 'Drone Photography', 'Virtual Twilight'],
+    { 
+      title: 'Editorial', 
+      price: '$500', 
+      desc: 'Deep-dive creative production with maximum variety.', 
+      features: ['Up to 2 Hours', 'Multiple Lighting Styles', 'Unlimited Outfits', 'Advanced Art Retouching', 'Priority Delivery'], 
       recommended: true, 
-      calendlyLink: "https://calendly.com/danymajeed/cinematic-re"
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
     },
-    {
-      title: 'Custom',
-      price: 'Custom',
-      desc: 'Multiple properties, Commercial, or Airbnb portfolios.',
-      features: ['Volume Pricing', 'Consistent Branding', 'Dedicated Asset Manager', 'Flexible Scheduling', 'Commercial Licensing'],
-      recommended: false,
-      calendlyLink: "" 
+    { 
+      title: 'Legacy', 
+      price: 'Custom', 
+      desc: 'Full-day commercial or high-fashion campaigns.', 
+      features: ['Full Day Production', 'Location Scouting', 'Commercial Licensing', 'Multi-Asset Delivery'], 
+      recommended: false, 
+      calendlyLink: "" // Request Consultation
+    }
+  ],
+  realestate: [
+    { 
+      title: 'Professional', 
+      price: '$300', 
+      desc: 'Perfect for high-end residential listings.', 
+      features: ['Up to 2,500 Sq Ft', 'AEB Bracketed HDR', 'Drone Photography Included', '24hr-48hr Turnaround'], 
+      recommended: false, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
+    },
+    { 
+      title: 'Cinematic', 
+      price: '$500', 
+      desc: 'The complete luxury marketing package.', 
+      features: ['Up to 4,000 Sq Ft', 'Cinematic Walkthrough Video', 'Drone Video Coverage', 'Twilight Enhancement', 'Interactive Floorplan'], 
+      recommended: true, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
+    },
+    { 
+      title: 'Developer', 
+      price: 'Custom', 
+      desc: 'Estates over 4,000 Sq Ft or commercial portfolios.', 
+      features: ['Volume Pricing', 'Asset Management', 'Full Licensing', 'Dedicated Support'], 
+      recommended: false, 
+      calendlyLink: "" // Request Consultation
+    }
+  ],
+  events: [
+    { 
+      title: 'Social', 
+      price: '$350', 
+      desc: 'Candid, high-energy coverage for private events.', 
+      features: ['60 Minute Coverage', 'Unlimited Captures', 'Digital Gallery Delivery', '48hr Sneak Peeks'], 
+      recommended: false, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
+    },
+    { 
+      title: 'Gala / Corporate', 
+      price: '$600', 
+      desc: 'Comprehensive coverage for high-stakes events.', 
+      features: ['Up to 2 Hours', 'Extended Highlight Gallery', 'Step & Repeat Ready', 'Social Media Teasers', 'Unlimited Usage Rights'], 
+      recommended: true, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
+    },
+    { 
+      title: 'Full Day', 
+      price: 'Custom', 
+      desc: 'Festivals, Conferences, or Multi-Day Summits.', 
+      features: ['Multiple Days', 'Same-Day Highlights', 'Marketing Content Strategy'], 
+      recommended: false, 
+      calendlyLink: "" // Request Consultation
     }
   ],
   wedding: [
-    {
-      title: 'Elopement',
-      price: '$1,500',
-      desc: 'Intimate coverage for small ceremonies.',
-      features: ['4 Hours Coverage', 'Online Gallery', 'High-Res Downloads', 'Print Release'],
-      recommended: false,
-      calendlyLink: "https://calendly.com/danymajeed/wedding-elopement"
+    { 
+      title: 'Intimate', 
+      price: '$500', 
+      desc: 'Capturing the core essence of your ceremony.', 
+      features: ['1-2 Hours Coverage', 'Signature Moment Focus', 'High-Res Digital Gallery', 'Print Release'], 
+      recommended: false, 
+      calendlyLink: "https://calendly.com/danymajeed/booking" 
     },
-    {
-      title: 'Signature',
-      price: '$3,200',
-      desc: 'Full day story-driven coverage.',
-      features: ['8 Hours Coverage', 'Second Shooter', 'Engagement Session', 'Leather Album', 'Drone Coverage'],
-      recommended: true,
-      calendlyLink: "https://calendly.com/danymajeed/wedding-signature"
+    { 
+      title: 'Cinematic Story', 
+      price: '$1,200', 
+      desc: 'A hybrid experience of stills and motion highlights.', 
+      features: ['4 Hours Coverage', 'Cinematic Highlight Film', 'Full Stills Gallery', 'Online Hosting'], 
+      recommended: true, 
+      calendlyLink: "" // Request Consultation
     },
-    {
-      title: 'Legacy',
-      price: '$5,000',
-      desc: 'The complete visual experience.',
-      features: ['All Day Coverage', 'Cinema Video (4k)', 'Rehearsal Dinner', 'Large Album + Prints', 'Raw Footage Option'],
-      recommended: false,
-      calendlyLink: "https://calendly.com/danymajeed/wedding-legacy"
+    { 
+      title: 'The Narrative', 
+      price: 'Custom', 
+      desc: 'Tailored full-day coverage for your legacy.', 
+      features: ['Extended Hours', 'Luxury Printed Album', 'Fine Art Retouching', 'Custom Requests'], 
+      recommended: false, 
+      calendlyLink: "" // Request Consultation
     }
-  ],
-  portrait: [
-    { title: 'Headshot', price: '$200', desc: 'Studio or Location.', features: ['30 Mins', '2 Retouched Images'], recommended: false, calendlyLink: "https://calendly.com/danymajeed/headshots" },
-    { title: 'Editorial', price: '$500', desc: 'Creative branding session.', features: ['2 Hours', 'Multiple Outfits', '10 Retouched Images'], recommended: true, calendlyLink: "https://calendly.com/danymajeed/editorial" },
-    { title: 'Campaign', price: 'Custom', desc: 'Full commercial production.', features: ['Half/Full Day', 'Team Coordination', 'License Usage'], recommended: false, calendlyLink: "" },
   ]
 };
 
-const categories = [
-  { id: 'realestate', label: 'Real Estate' },
-  { id: 'wedding', label: 'Weddings' },
-  { id: 'portrait', label: 'Portraits' }
-];
-
 const ServicesPage = () => {
-  const [activeTab, setActiveTab] = useState('realestate');
+  const [activeTab, setActiveTab] = useState('portrait');
   const [isCalendlyOpen, setCalendlyOpen] = useState(false);
   const [activeCalendlyUrl, setActiveCalendlyUrl] = useState("");
 
   const handleSelectPackage = (pkg) => {
-    if (pkg.price === 'Custom' || !pkg.calendlyLink) {
+    // If there is NO calendly link, scroll them down to the inquiry form!
+    if (!pkg.calendlyLink) {
       const contactSection = document.getElementById('contact');
       if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
       return;
     }
+    // Otherwise, open Calendly to get paid instantly
     setActiveCalendlyUrl(pkg.calendlyLink);
     setCalendlyOpen(true);
   };
@@ -144,12 +196,14 @@ const ServicesPage = () => {
                     <li key={i}>{feat}</li>
                   ))}
                 </ul>
-                <button 
-                  className="choose-btn"
-                  onClick={() => handleSelectPackage(pkg)}
-                >
-                  {pkg.price === 'Custom' ? 'Contact Us' : 'Check Availability'}
-                </button>
+                {/* Replace your current <button className="choose-btn"> with this: */}
+<button 
+  className="choose-btn"
+  onClick={() => handleSelectPackage(pkg)}
+>
+  {/* Dynamic Button Text based on the link! */}
+  {pkg.calendlyLink ? 'Book Session' : 'Request Consultation'}
+</button>
                 <div className="card-gloss"></div>
               </motion.div>
             </Tilt>

@@ -327,11 +327,11 @@ export default function CinematicHero() {
               Showcase
             </button>
             <button 
-              className="hero9__btn hero9__btnGhost" 
-              onClick={() => shutterTo("/contact")} 
-            >
-              Inquire
-            </button>
+  className="hero9__btn hero9__btnGhost" 
+  onClick={() => shutterTo("/services")} 
+>
+  Book
+</button>
           </div>
 
           <div className="hero9__sheet" aria-label="Select category">

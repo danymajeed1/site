@@ -1,5 +1,5 @@
 // src/pages/PortfolioPage.js
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FlowBackground from '../components/FlowBackground';
@@ -20,15 +20,20 @@ const portfolioData = [
   { id: 112, category: 'realestate', src: 'realestate/12.webp' },
   { id: 113, category: 'realestate', src: 'realestate/13.webp' },
 
-    // --- MATERNITY ---
-{ id: 201, category: 'maternity', src: '/maternity/1.webp' },
-{ id: 202, category: 'maternity', src: '/maternity/2.webp' },
-{ id: 203, category: 'maternity', src: '/maternity/3.webp' },
-{ id: 204, category: 'maternity', src: '/maternity/4.webp' },
-
+  // --- MATERNITY ---
+  { id: 201, category: 'maternity', src: '/maternity/1.webp' },
+  { id: 202, category: 'maternity', src: '/maternity/2.webp' },
+  { id: 203, category: 'maternity', src: '/maternity/3.webp' },
+  { id: 204, category: 'maternity', src: '/maternity/4.webp' },
+  { id: 205, category: 'maternity', src: '/maternity/5.webp' },
+  { id: 206, category: 'maternity', src: '/maternity/6.webp' },
+  { id: 207, category: 'maternity', src: '/maternity/7.webp' },
+  { id: 208, category: 'maternity', src: '/maternity/8.webp' },
+  { id: 209, category: 'maternity', src: '/maternity/9.webp' },
+  { id: 210, category: 'maternity', src: '/maternity/10.webp' },
 
   // --- WEDDINGS ---
-  { id: 300, category: 'wedding',    src: '/wedding/photo2.jpg' }, 
+  { id: 300, category: 'wedding',   src: '/wedding/photo2.jpg' }, 
   { id: 301, category: 'wedding',   src: '/wedding/1.webp' }, 
   { id: 302, category: 'wedding',   src: '/wedding/2.webp' },
   { id: 303, category: 'wedding',   src: '/wedding/3.webp' },
@@ -39,25 +44,57 @@ const portfolioData = [
   { id: 308, category: 'wedding',   src: '/wedding/8.webp' }, 
   { id: 309, category: 'wedding',   src: '/wedding/9.webp' },
   { id: 310, category: 'wedding',   src: '/wedding/10.webp' },
-
-
-
+  { id: 311, category: 'wedding',   src: '/wedding/11.webp' },
+  { id: 312, category: 'wedding',   src: '/wedding/12.webp' },
+  { id: 313, category: 'wedding',   src: '/wedding/13.webp' },
+  { id: 314, category: 'wedding',   src: '/wedding/14.webp' },
+  { id: 315, category: 'wedding',   src: '/wedding/15.webp' },
+  { id: 316, category: 'wedding',   src: '/wedding/16.webp' },
+  { id: 317, category: 'wedding',   src: '/wedding/17.webp' },
+  { id: 318, category: 'wedding',   src: '/wedding/18.webp' },
+  { id: 319, category: 'wedding',   src: '/wedding/19.webp' },
+  { id: 320, category: 'wedding',   src: '/wedding/20.webp' },
   
   // --- PORTRAITS ---
   { id: 401, category: 'portrait',   src: 'portraits/1.webp' },
   { id: 402, category: 'portrait',   src: 'portraits/2.webp' },
-  
+  { id: 403, category: 'portrait',   src: 'portraits/3.webp' },
+  { id: 404, category: 'portrait',   src: 'portraits/4.webp' },
+  { id: 405, category: 'portrait',   src: 'portraits/5.webp' },
+  { id: 406, category: 'portrait',   src: 'portraits/6.webp' },
+  { id: 407, category: 'portrait',   src: 'portraits/7.webp' },
+  { id: 408, category: 'portrait',   src: 'portraits/8.webp' },
+  { id: 409, category: 'portrait',   src: 'portraits/9.webp' },
+  { id: 410, category: 'portrait',   src: 'portraits/10.webp' },
+  { id: 411, category: 'portrait',   src: 'portraits/11.webp' },
+  { id: 412, category: 'portrait',   src: 'portraits/12.webp' },
+  { id: 413, category: 'portrait',   src: 'portraits/13.webp' },
+  { id: 414, category: 'portrait',   src: 'portraits/14.webp' },
+  { id: 415, category: 'portrait',   src: 'portraits/15.webp' },
+  { id: 416, category: 'portrait',   src: 'portraits/16.webp' },
+  { id: 417, category: 'portrait',   src: 'portraits/17.webp' },
 
   // --- EVENTS ---
   { id: 501, category: 'events',     src: 'event/1.webp' },
   { id: 502, category: 'events',     src: 'event/2.webp' },
+  { id: 503, category: 'events',     src: 'event/3.webp' },
+  { id: 504, category: 'events',     src: 'event/4.webp' },
+  { id: 505, category: 'events',     src: 'event/5.webp' },
+  { id: 506, category: 'events',     src: 'event/6.webp' },
+  { id: 507, category: 'events',     src: 'event/7.webp' },
+  { id: 508, category: 'events',     src: 'event/8.webp' },
+  { id: 509, category: 'events',     src: 'event/9.webp' },
+  { id: 510, category: 'events',     src: 'event/10.webp' },
+  { id: 511, category: 'events',     src: 'event/11.webp' },
 
-  
   // --- ART ---
   { id: 601, category: 'art',        src: 'art/1.webp' }, 
   { id: 602, category: 'art',        src: 'art/2.webp' }, 
   { id: 603, category: 'art',        src: 'art/3.webp' }, 
   { id: 604, category: 'art',        src: 'art/4.webp' }, 
+  { id: 605, category: 'art',        src: 'art/5.webp' },
+  { id: 606, category: 'art',        src: 'art/6.webp' },
+  { id: 607, category: 'art',        src: 'art/7.webp' },
 ];
 
 const categories = [
@@ -70,38 +107,46 @@ const categories = [
   { id: 'art', label: 'Art / Personal' }
 ];
 
-
+// --- SHUFFLE FUNCTION ---
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 const PortfolioPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedIndex, setSelectedIndex] = useState(null);
   
-  // Routing Hooks for the Shutter
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
 
-  // The Global Shutter Function (with Ninja Scroll)
+  // --- RANDOMIZE IMAGES ON LOAD ---
+  // useMemo ensures it only shuffles once when the user visits the page
+  const randomizedPortfolio = useMemo(() => shuffleArray(portfolioData), []);
+
   const shutterTo = useCallback((to) => {
     if (to === path) return;
     document.body.classList.add("shutter-on");
-    
-    // Close the lightbox immediately so it doesn't linger during the transition
     setSelectedIndex(null);
     
     window.setTimeout(() => {
       navigate(to);
       window.scrollTo(0, 0); 
-      
       window.setTimeout(() => {
         document.body.classList.remove("shutter-on");
       }, 60);
     }, 380); 
   }, [navigate, path]);
 
+  // Use the randomized array for filtering
   const filteredItems = activeFilter === 'all' 
-    ? portfolioData 
-    : portfolioData.filter(item => item.category === activeFilter);
+    ? randomizedPortfolio 
+    : randomizedPortfolio.filter(item => item.category === activeFilter);
 
   const handleNext = useCallback((e) => {
     if (e) e.stopPropagation();
@@ -177,10 +222,9 @@ const PortfolioPage = () => {
         </div>
       </div>
 
-      {/* MASONRY GRID CONTAINER - OPTIMIZED FOR MOBILE */}
       <AnimatePresence mode="wait">
         <motion.div 
-          key={activeFilter} /* MAGIC KEY: Animates the whole grid at once instead of individual items */
+          key={activeFilter} 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
@@ -188,7 +232,6 @@ const PortfolioPage = () => {
           className="masonry-grid-container"
         >
           {filteredItems.map((item, index) => (
-            /* Changed from motion.div to standard div to save massive amounts of RAM */
             <div 
               key={item.id} 
               className="masonry-item"
@@ -234,12 +277,11 @@ const PortfolioPage = () => {
             <button className="lightbox-nav right" onClick={handleNext} aria-label="Next image">&#10095;</button>
             <button className="close-lightbox" onClick={closeLightbox} aria-label="Close gallery">&times;</button>
             
-            {/* --- NEW: THE INQUIRE BUTTON --- */}
             <button 
               className="lightbox-inquire-btn" 
               onClick={(e) => {
-                e.stopPropagation(); // Prevents the lightbox from closing normally
-                shutterTo('/contact'); // Snaps the shutter and goes to the contact page
+                e.stopPropagation(); 
+                shutterTo('/contact'); 
               }}
             >
               Inquire About This Style

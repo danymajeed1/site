@@ -1269,44 +1269,60 @@ select option {
 .filter-btn:hover { color: #fff; }
 .filter-btn.active { background: #fff; color: #000; }
 
-/* --- GRID --- */
-.masonry-grid-container { 
-  position: relative; 
-  z-index: 10; 
-  max-width: 1800px; 
-  margin: 0 auto; 
-  padding: 0 40px; 
-  columns: 3 450px; 
-  column-gap: 15px; 
+/* --- THE MASONRY GRID --- */
+.masonry-grid-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px 100px;
+  
+  /* Desktop Layout: 4 Columns */
+  column-count: 4;
+  column-gap: 20px;
 }
 
-.masonry-item { 
-  position: relative; 
-  border-radius: 4px; 
-  overflow: hidden; 
-  margin-bottom: 15px; 
-  cursor: pointer; 
-  background: #000; 
-  break-inside: avoid-column; 
-  transition: all 0.3s ease; 
-  border: 2px solid transparent; 
+.masonry-item {
+  position: relative;
+  break-inside: avoid; /* Prevents an image from being split across columns */
+  margin-bottom: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 4px; /* Optional slight rounding */
 }
 
-.masonry-item img { 
-  width: 100%; 
-  height: auto; 
-  display: block; 
-  filter: brightness(0.9); 
-  transition: all 0.5s ease; 
+.masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.masonry-item:hover { 
-  border-color: rgba(255,255,255,0.8); 
-  transform: translateY(-5px); 
+/* Hover Effect */
+.masonry-item:hover img {
+  transform: scale(1.03);
 }
-.masonry-item:hover img { 
-  filter: brightness(1.1); 
-  transform: scale(1.02); 
+
+/* --- RESPONSIVE BREAKPOINTS --- */
+
+/* Tablets / Small Laptops */
+@media (max-width: 1200px) {
+  .masonry-grid-container {
+    column-count: 3;
+    padding: 0 20px 80px;
+  }
+}
+
+/* Mobile Phones (The "Interlocking" Fix) */
+@media (max-width: 768px) {
+  .masonry-grid-container {
+    /* Forces 2 columns on mobile so vertical and horizontal images fit together tightly */
+    column-count: 2; 
+    column-gap: 10px;
+    padding: 0 10px 60px;
+  }
+
+  .masonry-item {
+    margin-bottom: 10px; /* Tighter spacing on mobile */
+  }
 }
 
 /* LIGHTBOX */
@@ -1343,7 +1359,7 @@ select option {
   }
 }
 /* =========================================================
-   11. CONTACT & FOOTER (CLEAN REBUILD)
+   11. CONTACT & FOOTER (REFINED LUXURY BUILD)
 ========================================================= */
 
 /* WRAPPER */
@@ -1362,7 +1378,7 @@ select option {
   margin: 0 auto;
   padding: 140px 20px 100px;
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr; /* Text on left, Form on right */
+  grid-template-columns: 0.8fr 1.2fr; 
   gap: 80px;
   align-items: start;
   position: relative;
@@ -1372,7 +1388,7 @@ select option {
 .contact-header h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 3.5rem;
-  line-height: 1;
+  line-height: 1.1;
   color: #fff;
 }
 
@@ -1387,12 +1403,6 @@ select option {
 }
 
 /* FORM LAYOUT */
-.luxury-form {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1401,16 +1411,17 @@ select option {
 
 .form-group {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 35px; /* Increased for label breathing room */
 }
 
-/* INPUTS & SELECTS */
+/* INPUTS, SELECTS, & TEXTAREA */
 .form-group input, 
-.form-group select {
+.form-group select,
+.form-group textarea {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.3); /* Visible bottom line */
+  border-bottom: 1px solid rgba(255,255,255,0.2);
   padding: 15px 0 10px 0;
   font-size: 1.1rem;
   color: #fff;
@@ -1418,13 +1429,36 @@ select option {
   outline: none;
   border-radius: 0;
   appearance: none;
+  display: block;
+  transition: border-color 0.3s ease;
 }
 
-/* FIX: Dropdown Options Background (So text is visible) */
-.form-group select option {
-  background: #000;
-  color: #fff;
-  padding: 10px;
+.form-group textarea {
+  resize: none; /* Keeps the look clean */
+  min-height: 100px;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  border-bottom: 1px solid #fff;
+}
+
+/* FIX: FORCING DARK DROPDOWN COLORS */
+.form-group select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+}
+
+/* This targets the actual dropdown list background */
+.form-group select option,
+.form-group select optgroup {
+  background-color: #111 !important; 
+  color: #fff !important;
+  padding: 15px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* LABELS (The Floating Text) */
@@ -1433,45 +1467,52 @@ select option {
   top: 15px;
   left: 0;
   font-size: 1rem;
-  color: #888; /* Grey when empty */
+  color: #888;
   pointer-events: none;
-  transition: 0.3s ease all;
+  transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* ACTIVE LABEL (Moves up when typing) */
+/* ACTIVE LABEL STATE */
 .form-group input:focus ~ label,
 .form-group input:not(:placeholder-shown) ~ label,
 .form-group select:focus ~ label,
-.form-group select:not([value=""]) ~ label {
+.form-group select:not([value=""]) ~ label,
+.form-group textarea:focus ~ label,
+.form-group textarea:not(:placeholder-shown) ~ label {
   top: -20px;
-  font-size: 0.75rem;
-  color: #fff; /* Turns white when active */
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }
 
 /* SUBMIT BUTTON */
 .submit-btn {
-  margin-top: 20px;
-  padding: 20px 50px;
+  margin-top: 10px;
+  padding: 22px 60px;
   background: #fff;
   color: #000;
   border: none;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
+
 .submit-btn:hover {
   background: #ddd;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 /* --- FOOTER ZONE --- */
 .footer-zone {
   position: relative;
-  padding: 80px 40px 40px;
-  background: #000; /* Pitch black bottom */
-  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 100px 40px 60px;
+  background: #000;
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .footer-content {
@@ -1484,50 +1525,40 @@ select option {
   margin: 0 auto;
 }
 
-/* COPYRIGHT TEXT */
 .footer-left p {
   font-family: 'Montserrat', sans-serif;
-  color: #666;
-  font-size: 0.75rem;
+  color: #444;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin: 0;
+  letter-spacing: 0.2em;
 }
 
-/* NAVIGATION LINKS */
 .footer-right {
   display: flex;
-  gap: 30px;
+  gap: 40px;
   align-items: center;
 }
 
-/* FORCE WHITE LINKS (Fixes the Purple Issue) */
 .footer-right a {
   color: #fff !important; 
   text-decoration: none;
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
   font-weight: 600;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
+  opacity: 0.5;
+  transition: 0.3s ease;
 }
 
 .footer-right a:hover {
   opacity: 1;
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
-/* INSTAGRAM BUTTON */
 .ig-link {
-  border: 1px solid rgba(255,255,255,0.3);
-  padding: 8px 16px;
-  border-radius: 4px;
-}
-.ig-link:hover {
-  background: #fff;
-  color: #000 !important;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 20px;
+  border-radius: 2px;
 }
 
 /* WATERMARK BACKGROUND */
@@ -1540,61 +1571,40 @@ select option {
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
   font-size: 18vw;
-  line-height: 0.8;
-  color: rgba(255,255,255,0.03); /* Very subtle texture */
+  color: rgba(255,255,255,0.02);
   pointer-events: none;
   z-index: 0;
 }
 
-/* --- MOBILE ADJUSTMENTS (Max 900px) --- */
+/* BACK TO TOP */
+.back-to-top {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.4s ease;
+}
+
+.back-to-top:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* --- MOBILE --- */
 @media (max-width: 900px) {
   .contact-zone {
-    grid-template-columns: 1fr; /* Stack layout */
-    padding: 80px 20px;
-    gap: 40px;
+    grid-template-columns: 1fr;
+    padding: 100px 20px;
+    gap: 60px;
   }
-  
-  .form-row {
-    grid-template-columns: 1fr; /* Stack inputs */
-    gap: 30px;
-  }
-  
-  .footer-content {
-    flex-direction: column;
-    gap: 30px;
-    text-align: center;
-  }
-  
-  .footer-right {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .footer-bg-text {
-    display: none; /* Hide watermark on mobile */
-  }
-}
-
-
-/* CIRCLE BUTTON FIX, BACK TO TOP */
-.back-to-top {
-  width: 60px; 
-  height: 60px; 
-  border-radius: 50%; 
-  background: transparent; 
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #fff; 
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  font-size: 1.5rem; 
-  transition: 0.3s;
-}
-.back-to-top:hover { 
-  background: #fff; 
-  color: #000; 
-  border-color: #fff; 
+  .form-row { grid-template-columns: 1fr; gap: 30px; }
+  .footer-content { flex-direction: column; gap: 40px; }
+  .footer-right { flex-direction: column; gap: 20px; }
 }
 
 
