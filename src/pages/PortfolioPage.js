@@ -186,11 +186,13 @@ const PortfolioPage = () => {
         </div>
       </div>
 
-      <motion.div layout className="masonry-grid-container">
+      {/* MASONRY GRID CONTAINER */}
+      {/* 1. Removed 'layout' from the parent container */}
+      <motion.div className="masonry-grid-container">
         <AnimatePresence mode='popLayout'>
           {filteredItems.map((item, index) => (
             <motion.div 
-              layout 
+              // 2. Removed 'layout' from the individual items
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -199,7 +201,13 @@ const PortfolioPage = () => {
               className="masonry-item"
               onClick={() => setSelectedIndex(index)}
             >
-              <img src={item.src} alt={item.category} loading="lazy" />
+              {/* 3. Added decoding="async" to stop main-thread freezing */}
+              <img 
+                src={item.src} 
+                alt={item.category} 
+                loading="lazy" 
+                decoding="async" 
+              />
               
               <div className="masonry-overlay">
                 <span className="cat-badge">{item.category}</span>
@@ -208,7 +216,6 @@ const PortfolioPage = () => {
           ))}
         </AnimatePresence>
       </motion.div>
-
       <AnimatePresence>
         {selectedIndex !== null && (
           <motion.div 
