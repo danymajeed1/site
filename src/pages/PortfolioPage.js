@@ -70,16 +70,7 @@ const categories = [
   { id: 'art', label: 'Art / Personal' }
 ];
 
-// Removed the 'filter' properties completely to save mobile memory
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
-  },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } }
-};
+
 
 const PortfolioPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -186,36 +177,37 @@ const PortfolioPage = () => {
         </div>
       </div>
 
-      {/* MASONRY GRID CONTAINER */}
-      {/* 1. Removed 'layout' from the parent container */}
-      <motion.div className="masonry-grid-container">
-        <AnimatePresence mode='popLayout'>
+      {/* MASONRY GRID CONTAINER - OPTIMIZED FOR MOBILE */}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={activeFilter} /* MAGIC KEY: Animates the whole grid at once instead of individual items */
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.3 }}
+          className="masonry-grid-container"
+        >
           {filteredItems.map((item, index) => (
-            <motion.div 
-              // 2. Removed 'layout' from the individual items
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+            /* Changed from motion.div to standard div to save massive amounts of RAM */
+            <div 
               key={item.id} 
               className="masonry-item"
               onClick={() => setSelectedIndex(index)}
             >
-              {/* 3. Added decoding="async" to stop main-thread freezing */}
               <img 
                 src={item.src} 
                 alt={item.category} 
                 loading="lazy" 
                 decoding="async" 
               />
-              
               <div className="masonry-overlay">
                 <span className="cat-badge">{item.category}</span>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </AnimatePresence>
-      </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
       <AnimatePresence>
         {selectedIndex !== null && (
           <motion.div 
