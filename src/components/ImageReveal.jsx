@@ -4,7 +4,7 @@ import './ImageReveal.css';
 
 const database = {
   "real-estate": [
-    { id: "re1", before: "reveal/1.webp", after: "reveal/2.webp", title: "HDR Window Pulls", desc: "Neutralizing harsh exterior light and recovering deep interior shadow detail." },
+    { id: "re1", before: "/reveal/1.webp", after: "/reveal/2.webp", title: "HDR Window Pulls", desc: "Neutralizing harsh exterior light and recovering deep interior shadow detail." },
     { id: "re2", before: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1920", after: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1920", title: "Twilight Conversion", desc: "Transforming flat daylight captures into premium, mood-driven twilight real estate." },
     { id: "re3", before: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1920", after: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1920", title: "Color Cast Removal", desc: "Stripping mixed indoor lighting temperatures to create pure, clean whites and natural tones." }
   ],
