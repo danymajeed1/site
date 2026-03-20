@@ -3,6 +3,7 @@ import Tilt from "react-parallax-tilt";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./CinematicHero.css";
+import SEO from '../components/SEO';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
@@ -246,6 +247,12 @@ export default function CinematicHero() {
   return (
     <section className="hero9">
       <TopoCanvas/>
+      <SEO 
+        title="Premium Photography Services in Austin, TX" 
+        description="Book luxury real estate photography, intimate cinematic weddings, and high-end editorial portraits. Specializing in bold, bright imagery with dramatic shadows."
+        url="https://danymajeed.com/services"
+      />
+      
       <div className="hero9bg" aria-hidden="true">
         <div className="hero9bg__auras"/>
         <div className="hero9bg__noise"/>
@@ -302,8 +309,8 @@ export default function CinematicHero() {
 
         <div className="hero9__copy">
           <motion.div className="hero9__kicker" initial={{opacity:0,x:-22}} animate={{opacity:1,x:0}} transition={{delay:0.3,duration:0.85}}>
-            DANY MAJEED <span className="k-slash">{"//"}</span> PRODUCTIONS
-          </motion.div>
+  DANY MAJEED <span className="k-slash">{"//"}</span> AUSTIN, TX
+</motion.div>
 
           <div className="hero9__textMask">
             <AnimatePresence mode="wait">

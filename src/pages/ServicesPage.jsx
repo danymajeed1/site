@@ -5,6 +5,7 @@ import Tilt from 'react-parallax-tilt';
 import FlowBackground from '../components/FlowBackground';
 import { PopupModal } from "react-calendly";
 import { HashLink } from 'react-router-hash-link'; // Needed for scrolling to contact
+import SEO from '../components/SEO';
 
 // --- DATA ---
 // src/pages/ServicesPage.js
@@ -143,6 +144,11 @@ const ServicesPage = () => {
   return (
     <div className="services-page">
       <FlowBackground />
+      <SEO 
+        title="Premium Photography Services in Austin, TX" 
+        description="Book luxury real estate photography, intimate cinematic weddings, and high-end editorial portraits. Specializing in bold, bright imagery with dramatic shadows."
+        url="https://danymajeed.com/services"
+      />
 
       <div className="services-hero">
         <motion.h1

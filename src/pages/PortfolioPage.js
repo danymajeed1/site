@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FlowBackground from '../components/FlowBackground';
+import SEO from '../components/SEO';
 
 const portfolioData = [
   // --- REAL ESTATE ---
@@ -184,7 +185,12 @@ const PortfolioPage = () => {
   return (
     <div className="portfolio-page">
       <FlowBackground />
-
+    <SEO 
+        title="Premium Photography Services in Austin, TX" 
+        description="Book luxury real estate photography, intimate cinematic weddings, and high-end editorial portraits. Specializing in bold, bright imagery with dramatic shadows."
+        url="https://danymajeed.com/services"
+      />
+      
       <div className="portfolio-hero">
         <div className="hero-text-wrapper">
           <motion.span 

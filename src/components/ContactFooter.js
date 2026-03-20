@@ -14,7 +14,7 @@ const ContactFooter = () => {
     event.preventDefault();
     setStatus("Sending your vision...");
     const formData = new FormData(event.target);
-    formData.append("access_key", "8766c67d-857d-4b42-91ff-a8d6b9e680d7"); //
+    formData.append("access_key", "8766c67d-857d-4b42-91ff-a8d6b9e680d7"); 
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -60,7 +60,6 @@ const ContactFooter = () => {
           </div>
           
           <div className="form-group">
-            {/* UPDATED DROPDOWN TO MATCH PACKAGES */}
             <select 
               id="service" 
               name="service_type"
@@ -113,7 +112,6 @@ const ContactFooter = () => {
             </div>
           </div>
 
-          {/* NEW: VISION & EXTRA NOTES BOX */}
           <div className="form-group">
             <textarea 
               placeholder=" " 
@@ -142,7 +140,20 @@ const ContactFooter = () => {
       <footer className="footer-zone">
         <div className="footer-bg-text">DANY</div>
         <div className="footer-content">
-          <div className="footer-left"><p>© {new Date().getFullYear()} DANY MAJEED.</p></div>
+          <div className="footer-left">
+            {/* NEW: Location Tag */}
+            <p style={{ 
+              fontSize: '0.85rem', 
+              letterSpacing: '0.15em', 
+              textTransform: 'uppercase', 
+              marginBottom: '8px', 
+              color: '#888',
+              fontFamily: "'Montserrat', sans-serif"
+            }}>
+              Based in Austin, TX
+            </p>
+            <p>© {new Date().getFullYear()} DANY MAJEED.</p>
+          </div>
           <button onClick={scrollToTop} className="back-to-top" aria-label="Scroll to top">↑</button>
           <div className="footer-right">
             <a href="#home">Home</a>
